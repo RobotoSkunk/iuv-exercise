@@ -1,0 +1,24 @@
+{
+  "name": "module-database",
+  "version": "0.1.0",
+  "description": "The database module for the project.",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "migration:create": "ts-node ./scripts/migration-create.ts"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "kysely": "^0.28.16",
+    "pg": "^8.20.0",
+    "source-map-support": "^0.5.21",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "ts-node": "^10.9.2"
+  }
+}
