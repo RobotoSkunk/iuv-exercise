@@ -116,7 +116,7 @@ class Database
 		return results;
 	}
 
-	public get conn()
+	public get connection()
 	{
 		return this.db;
 	}

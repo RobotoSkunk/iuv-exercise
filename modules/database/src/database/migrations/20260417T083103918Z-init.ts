@@ -9,11 +9,10 @@ async function up(db: Kysely<unknown>): Promise<void>
 {
 	await db.schema
 		.createTable('teachers')
-		.addColumn('id', 'uuid', cb => cb.primaryKey())
+		.addColumn('id', 'text', cb => cb.primaryKey())
 		.addColumn('name', 'text', cb => cb.notNull())
 		.addColumn('lastname_father', 'text', cb => cb.notNull())
 		.addColumn('lastname_mother', 'text', cb => cb.notNull())
-		.addColumn('serial', 'text', cb => cb.notNull())
 		.execute();
 
 	await db.schema
@@ -25,11 +24,10 @@ async function up(db: Kysely<unknown>): Promise<void>
 
 	await db.schema
 		.createTable('users')
-		.addColumn('id', 'uuid', cb => cb.primaryKey())
+		.addColumn('id', 'text', cb => cb.primaryKey())
 		.addColumn('name', 'text', cb => cb.notNull())
 		.addColumn('lastname_father', 'text', cb => cb.notNull())
 		.addColumn('lastname_mother', 'text', cb => cb.notNull())
-		.addColumn('serial', 'text', cb => cb.notNull())
 		.addColumn('password', 'text', cb => cb.notNull())
 		.addColumn('role_id', 'integer', cb => cb.notNull())
 
@@ -38,8 +36,8 @@ async function up(db: Kysely<unknown>): Promise<void>
 
 	await db.schema
 		.createTable('attendances')
-		.addColumn('id', 'uuid', cb => cb.primaryKey())
-		.addColumn('teacher_id', 'uuid', cb => cb.notNull())
+		.addColumn('id', 'uuid', cb => cb.primaryKey().defaultTo(sql`GEN_RANDOM_UUID()`))
+		.addColumn('teacher_id', 'text', cb => cb.notNull())
 		.addColumn('created_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
 		.addColumn('is_entry', 'boolean', cb => cb.notNull())
 
@@ -49,7 +47,7 @@ async function up(db: Kysely<unknown>): Promise<void>
 	await db.schema
 		.createTable('auth_tokens')
 		.addColumn('id', 'text', cb => cb.primaryKey())
-		.addColumn('user_id', 'uuid', cb => cb.notNull())
+		.addColumn('user_id', 'text', cb => cb.notNull())
 		.addColumn('hmac_hash', 'text', cb => cb.notNull())
 		.addColumn('created_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
 		.addColumn('expires_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))

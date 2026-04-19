@@ -7,7 +7,6 @@ export interface DB_Users
 	name?: string;
 	lastname_father?: string;
 	lastname_mother?: string;
-	serial?: string;
 	password?: string;
 	role_id?: number;
 }
