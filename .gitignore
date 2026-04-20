@@ -44,3 +44,6 @@ next-env.d.ts
 
 # draw.io files
 *.drawio.bkp
+
+# REST test files
+*.http
