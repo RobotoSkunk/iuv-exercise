@@ -30,7 +30,6 @@ class Teacher extends User
 		}
 	}
 
-	
 	public async getAttendances(from: Date, to: Date)
 	{
 		const attendances = await client.connection
