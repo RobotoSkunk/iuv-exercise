@@ -94,6 +94,13 @@ node
 Por ahora, el código de `checkout` es demasiado simple, puesto a que es parte de
 la primera iteración del proyecto.
 
+## Diagrama de clases
+
+![Diagrama de clases](assets/UML.svg) 
+
+Las clases del diagrama se encuentran implementados en el módulo `database` en
+el directorio [src/entities](modules/database/src/entities) del módulo.
+
 ## Extensiones recomendadas para Visual Studio Code
 
 Una extensión recomendada para ejecutar pruebas con los módulos es
