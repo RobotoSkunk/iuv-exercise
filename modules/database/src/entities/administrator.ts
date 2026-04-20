@@ -42,11 +42,11 @@ class Administrator extends User
 				})
 				.where('id', '=', this._serial)
 				.execute();
-
-			return newPassword;
 		} catch (error) {
 			throw error;
 		}
+
+		return newPassword;
 	}
 
 	/**

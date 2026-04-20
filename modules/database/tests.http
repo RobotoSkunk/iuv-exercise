@@ -30,3 +30,26 @@ content-type: application/json
 GET http://127.0.0.1:5001/administrator/ABC HTTP/1.1
 
 ###
+
+POST http://127.0.0.1:5001/teacher HTTP/1.1
+content-type: application/json
+
+{
+	"serial": "DEF",
+	"name": "Profesor",
+	"lastname_father": "Inocencio",
+	"lastname_mother": "Jirafales"
+}
+
+###
+
+GET http://127.0.0.1:5001/teacher/DEF HTTP/1.1
+
+###
+
+POST http://127.0.0.1:5001/teacher/DEF/attendance HTTP/1.1
+content-type: application/json
+
+###
+
+GET http://127.0.0.1:5001/teacher/DEF/attendances/1776653000000/1776659000000 HTTP/1.1

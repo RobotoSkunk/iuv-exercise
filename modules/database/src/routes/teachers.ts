@@ -127,16 +127,23 @@ teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 		code: 0,
 		data: {
 			attendances: attendances.map((value) => ({
-				created_at: value.createdAt,
+				id: value.id,
 				is_entry: value.isEntry,
+				created_at: value.createdAt,
 			})),
 		},
 	});
 });
 
-teachersRouter.post('/teacher/:id/attendance/:date', async (req, res) =>
+teachersRouter.post('/teacher/:id/attendance', async (req, res) =>
 {
-	const timestamp = new Date(Number.parseInt(req.params.date));
+	let date: string | undefined = req.body.date;
+	let timestamp = new Date();
+
+	if (date) {
+		timestamp = new Date(Number.parseInt(req.body.date));
+	}
+
 	const teacherId = req.params.id;
 
 	const teacher = await Teacher.getBySerial(teacherId);
@@ -154,7 +161,7 @@ teachersRouter.post('/teacher/:id/attendance/:date', async (req, res) =>
 	res.json({
 		code: 0,
 		data: {
-			is_entry: Boolean(isEntry),
+			is_entry: isEntry === 1,
 		},
 	});
 });

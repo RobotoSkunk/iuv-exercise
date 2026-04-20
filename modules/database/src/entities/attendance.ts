@@ -5,13 +5,20 @@ import Entity from './entity';
 
 class Attendance implements Entity
 {
+	private _id: string;
 	private _createdAt: Date;
 	private _isEntry: boolean;
 
-	constructor(createdAt: Date, isEntry: boolean)
+	constructor(id: string, createdAt: Date, isEntry: boolean)
 	{
+		this._id = id;
 		this._createdAt = createdAt;
 		this._isEntry = isEntry;
+	}
+
+	public get id()
+	{
+		return this._id;
 	}
 
 	public get createdAt()
@@ -45,7 +52,7 @@ class Attendance implements Entity
 			.limit(1)
 			.executeTakeFirst();
 
-		const isEntry = !attendances?.is_entry ? 1 : 0;
+		const isEntry = !(attendances?.is_entry == 1) ? 1 : 0;
 
 		await client.connection
 			.insertInto('attendances')

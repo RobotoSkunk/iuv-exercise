@@ -35,6 +35,7 @@ class Teacher extends User
 		const attendances = await client.connection
 			.selectFrom('attendances')
 			.select([
+				'id',
 				'is_entry',
 				'created_at',
 			])
@@ -43,16 +44,24 @@ class Teacher extends User
 			.where('created_at', '<=', to)
 			.execute();
 
-		return attendances.map(({ created_at, is_entry }) => new Attendance(created_at as Date, Boolean(is_entry)));
+		return attendances.map(({ id, created_at, is_entry }) => new Attendance(
+			id as string,
+			created_at as Date,
+			Boolean(is_entry)
+		));
 	}
 
 	public async setAttendance(timestamp: Date)
 	{
+		let isEntry = 0;
+
 		try {
-			return await Attendance.register(this._serial, timestamp);
+			isEntry = await Attendance.register(this._serial, timestamp);
 		} catch (error) {
 			throw error;
 		}
+
+		return isEntry;
 	}
 
 
