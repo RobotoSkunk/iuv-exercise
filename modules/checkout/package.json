@@ -1,25 +1,22 @@
 {
-  "name": "module-database",
+  "name": "checkout",
   "version": "0.1.0",
-  "description": "The database module for the project.",
+  "description": "The checkout module for the project.",
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
     "migration:create": "ts-node ./scripts/migration-create.ts"
   },
   "dependencies": {
-    "argon2": "^0.44.0",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "kysely": "^0.28.16",
-    "pg": "^8.20.0",
-    "source-map-support": "^0.5.21",
-    "typescript": "^6.0.3"
+    "helmet": "^8.1.0",
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/helmet": "^0.0.48",
     "@types/node": "^25.6.0",
-    "@types/pg": "^8.20.0",
-    "ts-node": "^10.9.2"
+    "typescript": "^6.0.3"
   }
 }

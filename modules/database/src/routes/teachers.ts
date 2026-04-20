@@ -137,11 +137,11 @@ teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 
 teachersRouter.post('/teacher/:id/attendance', async (req, res) =>
 {
-	let date: string | undefined = req.body.date;
+	let date: string | undefined = req.body?.date;
 	let timestamp = new Date();
 
 	if (date) {
-		timestamp = new Date(Number.parseInt(req.body.date));
+		timestamp = new Date(Number.parseInt(date));
 	}
 
 	const teacherId = req.params.id;
