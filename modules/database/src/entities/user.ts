@@ -42,29 +42,26 @@ class User implements Entity
 		}
 	}
 
-	public static async register(
-		serial: string,
-		name: string,
-		lastnameFather: string,
-		lastnameMother: string)
+	public static async getBySerial(serial: string)
 	{
-		try {
-			await client.connection
-				.insertInto('users')
-				.values({
-					id: serial,
-					name: name,
-					lastname_father: lastnameFather,
-					lastname_mother: lastnameMother,
-				})
-				.execute();
+		const userData = await client.connection
+			.selectFrom('users')
+			.selectAll()
+			.where('id', '=', serial)
+			.executeTakeFirst();
 
-		} catch (error) {
-			throw error;
+		if (!userData) {
+			return undefined;
 		}
 
-		return new User(serial as string, name, lastnameFather, lastnameMother);
+		return new User(
+			userData.id as string,
+			userData.name as string,
+			userData.lastname_father as string,
+			userData.lastname_mother as string);
 	}
+
+	// A register method should be here, but TypeScript is dumb and doesn't understand how to overload properly.
 }
 
 export default User;
