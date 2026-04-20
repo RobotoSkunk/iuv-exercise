@@ -1,0 +1,28 @@
+###
+
+POST http://127.0.0.1:5001/role HTTP/1.1
+content-type: application/json
+
+{
+    "name": "role example",
+    "permissions": [ "permission_1", "permission_2", "permission_3" ]
+}
+
+###
+
+GET http://127.0.0.1:5001/roles HTTP/1.1
+
+###
+
+POST http://127.0.0.1:5001/administrator HTTP/1.1
+content-type: application/json
+
+{
+	"serial": "ABC",
+	"name": "John",
+	"lastname_father": "Doe",
+	"lastname_mother": "Pippo",
+	"role_id": 1
+}
+
+###

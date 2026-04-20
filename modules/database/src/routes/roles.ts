@@ -4,7 +4,7 @@ import Role from '../entities/role';
 
 const rolesRouter = Router();
 
-rolesRouter.get('role/:id', async (req, res) =>
+rolesRouter.get('/role/:id', async (req, res) =>
 {
 	const roleId = Number.parseInt(req.params.id);
 	const roleData = await Role.getById(roleId);
@@ -23,7 +23,7 @@ rolesRouter.get('role/:id', async (req, res) =>
 	});
 });
 
-rolesRouter.get('roles', async (_, res) =>
+rolesRouter.get('/roles', async (_, res) =>
 {
 	const rolesData = await Role.getAll();
 
@@ -35,7 +35,7 @@ rolesRouter.get('roles', async (_, res) =>
 	});
 });
 
-rolesRouter.post('role', async (req, res) =>
+rolesRouter.post('/role', async (req, res) =>
 {
 	const data: {
 		name: string,
@@ -49,7 +49,7 @@ rolesRouter.post('role', async (req, res) =>
 	});
 });
 
-rolesRouter.patch('role/:id', async (req, res) =>
+rolesRouter.patch('/role/:id', async (req, res) =>
 {
 	const roleId = Number.parseInt(req.params.id);
 

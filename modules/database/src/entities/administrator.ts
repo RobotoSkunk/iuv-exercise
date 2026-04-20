@@ -8,13 +8,17 @@ import crypto from 'crypto';
 
 class Administrator extends User
 {
+	public roleId: number;
+
 	constructor(
 		serial: string,
 		name: string,
 		lastnameFather: string,
-		lastnameMother: string)
+		lastnameMother: string,
+		roleId: number)
 	{
 		super(serial, name, lastnameFather, lastnameMother);
+		this.roleId = roleId;
 	}
 
 
@@ -95,6 +99,23 @@ class Administrator extends User
 		return true;
 	}
 
+	public async syncToDatabase()
+	{
+		try {
+			await client.connection
+				.updateTable('users')
+				.set({
+					name: this.name,
+					lastname_father: this.lastnameFather,
+					lastname_mother: this.lastnameMother,
+					role_id: this.roleId,
+				})
+				.execute();
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	public static async getBySerial(serial: string)
 	{
 		const userData = await client.connection
@@ -111,7 +132,8 @@ class Administrator extends User
 			userData.id as string,
 			userData.name as string,
 			userData.lastname_father as string,
-			userData.lastname_mother as string);
+			userData.lastname_mother as string,
+			userData.role_id as number);
 	}
 
 	public static async register(
@@ -119,7 +141,8 @@ class Administrator extends User
 		name: string,
 		lastnameFather: string,
 		lastnameMother: string,
-		password: string)
+		password: string,
+		roleId: number)
 	{
 		const passwordHash = await argon2.hash(password);
 
@@ -132,6 +155,7 @@ class Administrator extends User
 					lastname_father: lastnameFather,
 					lastname_mother: lastnameMother,
 					password: passwordHash,
+					role_id: roleId,
 				})
 				.execute();
 
@@ -139,7 +163,7 @@ class Administrator extends User
 			throw error;
 		}
 
-		return new Administrator(serial as string, name, lastnameFather, lastnameMother);
+		return new Administrator(serial as string, name, lastnameFather, lastnameMother, roleId);
 	}
 }
 

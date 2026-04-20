@@ -6,7 +6,7 @@ import client from '../database';
 
 const tokensRouter = Router();
 
-tokensRouter.get('token/:id', async (req, res) =>
+tokensRouter.get('/token/:id', async (req, res) =>
 {
 	const tokenId = req.params.id;
 
@@ -30,7 +30,7 @@ tokensRouter.get('token/:id', async (req, res) =>
 	});
 });
 
-tokensRouter.delete('token/:id', async (req, res) =>
+tokensRouter.delete('/token/:id', async (req, res) =>
 {
 	const tokenId = req.params.id;
 
@@ -45,7 +45,7 @@ tokensRouter.delete('token/:id', async (req, res) =>
 	});
 });
 
-tokensRouter.patch('token/:id', async (req, res) =>
+tokensRouter.patch('/token/:id', async (req, res) =>
 {
 	const tokenId = req.params.id;
 
@@ -66,7 +66,7 @@ tokensRouter.patch('token/:id', async (req, res) =>
 	});
 });
 
-tokensRouter.post('token', async (req, res) =>
+tokensRouter.post('/token', async (req, res) =>
 {
 	// I'll add proper security later, for now I need functionality.
 	const body: {

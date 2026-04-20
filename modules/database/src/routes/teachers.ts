@@ -4,10 +4,9 @@ import Teacher from '../entities/teacher';
 
 const teachersRouter = Router();
 
-teachersRouter.get('teacher/:id', async (req, res) =>
+teachersRouter.get('/teacher/:id', async (req, res) =>
 {
-	const teacherId = req.params.id;
-
+	const teacherId = req.params.id as string;
 	const teacherData = await Teacher.getBySerial(teacherId);
 
 	if (!teacherData) {
@@ -24,7 +23,7 @@ teachersRouter.get('teacher/:id', async (req, res) =>
 	});
 });
 
-teachersRouter.post('teacher', async (req, res) =>
+teachersRouter.post('/teacher', async (req, res) =>
 {
 	const data: {
 		serial: string;
@@ -45,7 +44,7 @@ teachersRouter.post('teacher', async (req, res) =>
 	});
 });
 
-teachersRouter.patch('teacher/:id', async (req, res) =>
+teachersRouter.patch('/teacher/:id', async (req, res) =>
 {
 	const teacherId = req.params.id;
 
@@ -84,7 +83,7 @@ teachersRouter.patch('teacher/:id', async (req, res) =>
 	});
 });
 
-teachersRouter.get('teacher/:id/attendances/:from/:to', async (req, res) =>
+teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 {
 	const from = new Date(Number.parseInt(req.params.from));
 	const to = new Date(Number.parseInt(req.params.to));
@@ -110,7 +109,7 @@ teachersRouter.get('teacher/:id/attendances/:from/:to', async (req, res) =>
 	});
 });
 
-teachersRouter.post('teacher/:id/attendance/:date', async (req, res) =>
+teachersRouter.post('/teacher/:id/attendance/:date', async (req, res) =>
 {
 	const timestamp = new Date(Number.parseInt(req.params.date));
 	const teacherId = req.params.id;

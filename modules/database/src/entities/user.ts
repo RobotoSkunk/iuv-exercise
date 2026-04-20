@@ -26,21 +26,7 @@ class User implements Entity
 		return this._serial;
 	}
 
-	public async syncToDatabase()
-	{
-		try {
-			await client.connection
-				.updateTable('users')
-				.set({
-					name: this.name,
-					lastname_father: this.lastnameFather,
-					lastname_mother: this.lastnameMother,
-				})
-				.execute();
-		} catch (error) {
-			throw error;
-		}
-	}
+	public async syncToDatabase() { }
 
 	public static async getBySerial(serial: string)
 	{

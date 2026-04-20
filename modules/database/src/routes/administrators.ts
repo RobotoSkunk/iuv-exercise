@@ -7,10 +7,9 @@ import crypto from 'crypto';
 
 const adminRouter = Router();
 
-adminRouter.get('administrator/:id', async (req, res) =>
+adminRouter.get('/administrator/:id', async (req, res) =>
 {
-	const adminId = req.params.id;
-
+	const adminId = req.params.id as string;
 	const adminData = await Administrator.getBySerial(adminId);
 
 	if (!adminData) {
@@ -27,13 +26,14 @@ adminRouter.get('administrator/:id', async (req, res) =>
 	});
 });
 
-adminRouter.post('administrator', async (req, res) =>
+adminRouter.post('/administrator', async (req, res) =>
 {
 	const data: {
 		serial: string;
 		name: string;
 		lastname_father: string;
 		lastname_mother: string;
+		role_id: number;
 	} = req.body;
 
 	const newPassword = crypto
@@ -45,7 +45,8 @@ adminRouter.post('administrator', async (req, res) =>
 		data.name,
 		data.lastname_father,
 		data.lastname_mother,
-		newPassword
+		newPassword,
+		data.role_id
 	);
 
 	res.json({
@@ -56,7 +57,7 @@ adminRouter.post('administrator', async (req, res) =>
 	});
 });
 
-adminRouter.patch('administrator/:id', async (req, res) =>
+adminRouter.patch('/administrator/:id', async (req, res) =>
 {
 	const adminId = req.params.id;
 
@@ -64,6 +65,7 @@ adminRouter.patch('administrator/:id', async (req, res) =>
 		name?: string;
 		lastname_father?: string;
 		lastname_mother?: string;
+		role_id?: number;
 	} = req.body;
 
 	const admin = await Administrator.getBySerial(adminId);
@@ -88,6 +90,10 @@ adminRouter.patch('administrator/:id', async (req, res) =>
 		admin.lastnameMother = data.lastname_mother;
 	}
 
+	if (data.role_id) {
+		admin.roleId = data.role_id;
+	}
+
 	await admin.syncToDatabase();
 
 	res.json({
@@ -95,7 +101,7 @@ adminRouter.patch('administrator/:id', async (req, res) =>
 	});
 });
 
-adminRouter.post('administrator/authenticate', async (req, res) =>
+adminRouter.post('/administrator/authenticate', async (req, res) =>
 {
 	const data: {
 		serial: string;
@@ -112,7 +118,7 @@ adminRouter.post('administrator/authenticate', async (req, res) =>
 	});
 });
 
-adminRouter.get('administrator/:id/change-password', async (req, res) =>
+adminRouter.get('/administrator/:id/change-password', async (req, res) =>
 {
 	const adminId = req.params.id;
 
