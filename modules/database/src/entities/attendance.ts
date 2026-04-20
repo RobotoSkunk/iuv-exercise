@@ -45,14 +45,18 @@ class Attendance implements Entity
 			.limit(1)
 			.executeTakeFirst();
 
+		const isEntry = !attendances?.is_entry ? 1 : 0;
+
 		await client.connection
 			.insertInto('attendances')
 			.values({
 				teacher_id: serial,
-				is_entry: !attendances?.is_entry ? 1 : 0,
+				is_entry: isEntry,
 				created_at: createdAt,
 			})
 			.execute();
+
+		return isEntry;
 	}
 }
 

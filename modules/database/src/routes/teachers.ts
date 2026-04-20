@@ -19,7 +19,12 @@ teachersRouter.get('/teacher/:id', async (req, res) =>
 
 	res.json({
 		code: 0,
-		data: teacherData,
+		data: {
+			serial: teacherData.serial,
+			name: teacherData.name,
+			lastname_father: teacherData.lastnameFather,
+			lastname_mother: teacherData.lastnameMother,
+		},
 	});
 });
 
@@ -83,6 +88,23 @@ teachersRouter.patch('/teacher/:id', async (req, res) =>
 	});
 });
 
+teachersRouter.get('/teachers', async (req, res) =>
+{
+	const teachers = await Teacher.getAll();
+
+	res.json({
+		code: 0,
+		data: {
+			teachers: teachers.map((value) => ({
+				serial: value.serial,
+				name: value.name,
+				lastname_father: value.lastnameFather,
+				lastname_mother: value.lastnameMother,
+			})),
+		},
+	});
+});
+
 teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 {
 	const from = new Date(Number.parseInt(req.params.from));
@@ -104,7 +126,10 @@ teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 	res.json({
 		code: 0,
 		data: {
-			attendances: attendances,
+			attendances: attendances.map((value) => ({
+				created_at: value.createdAt,
+				is_entry: value.isEntry,
+			})),
 		},
 	});
 });
@@ -124,10 +149,13 @@ teachersRouter.post('/teacher/:id/attendance/:date', async (req, res) =>
 		return;
 	}
 
-	await teacher.setAttendance(timestamp);
+	const isEntry = await teacher.setAttendance(timestamp);
 
 	res.json({
 		code: 0,
+		data: {
+			is_entry: Boolean(isEntry),
+		},
 	});
 });
 

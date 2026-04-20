@@ -165,6 +165,22 @@ class Administrator extends User
 
 		return new Administrator(serial as string, name, lastnameFather, lastnameMother, roleId);
 	}
+
+	public static async getAll()
+	{
+		const admins = await client.connection
+			.selectFrom('users')
+			.selectAll()
+			.execute();
+
+		return admins.map(({ id, name, lastname_father, lastname_mother, role_id }) => new Administrator(
+			id as string,
+			name as string,
+			lastname_father as string,
+			lastname_mother as string,
+			role_id as number
+		));
+	}
 }
 
 export default Administrator;

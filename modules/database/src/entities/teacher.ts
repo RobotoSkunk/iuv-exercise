@@ -49,7 +49,7 @@ class Teacher extends User
 	public async setAttendance(timestamp: Date)
 	{
 		try {
-			await Attendance.register(this._serial, timestamp);
+			return await Attendance.register(this._serial, timestamp);
 		} catch (error) {
 			throw error;
 		}
@@ -97,6 +97,21 @@ class Teacher extends User
 		}
 
 		return new Teacher(serial as string, name, lastnameFather, lastnameMother);
+	}
+
+	public static async getAll()
+	{
+		const teachers = await client.connection
+			.selectFrom('teachers')
+			.selectAll()
+			.execute();
+
+		return teachers.map(({ id, name, lastname_father, lastname_mother }) => new Teacher(
+			id as string,
+			name as string,
+			lastname_father as string,
+			lastname_mother as string
+		));
 	}
 }
 

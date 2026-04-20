@@ -22,7 +22,13 @@ adminRouter.get('/administrator/:id', async (req, res) =>
 
 	res.json({
 		code: 0,
-		data: adminData,
+		data: {
+			serial: adminData.serial,
+			name: adminData.name,
+			lastname_father: adminData.lastnameFather,
+			lastname_mother: adminData.lastnameMother,
+			role_id: adminData.roleId,
+		},
 	});
 });
 
@@ -138,6 +144,26 @@ adminRouter.get('/administrator/:id/change-password', async (req, res) =>
 		code: 0,
 		data: {
 			password: newPassword,
+		},
+	});
+});
+
+
+adminRouter.get('/administrators', async (req, res) =>
+{
+	const administrators = await Administrator.getAll();
+
+	res.json({
+		code: 0,
+		data: {
+			administrators: administrators.map((admin) =>
+			({
+				serial: admin.serial,
+				name: admin.name,
+				lastname_father: admin.lastnameFather,
+				lastname_mother: admin.lastnameMother,
+				role_id: admin.roleId,
+			})),
 		},
 	});
 });

@@ -34,14 +34,13 @@ tokensRouter.delete('/token/:id', async (req, res) =>
 {
 	const tokenId = req.params.id;
 
-	const tokenData = await client.connection
+	await client.connection
 		.deleteFrom('auth_tokens')
 		.where('id', '=', tokenId)
 		.executeTakeFirst();
 
 	res.json({
 		code: 0,
-		data: tokenData,
 	});
 });
 

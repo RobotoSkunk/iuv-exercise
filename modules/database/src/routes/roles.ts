@@ -19,18 +19,26 @@ rolesRouter.get('/role/:id', async (req, res) =>
 
 	res.json({
 		code: 0,
-		data: roleData,
+		data: {
+			id: roleData.id,
+			name: roleData.name,
+			permissions: roleData.permissions,
+		},
 	});
 });
 
 rolesRouter.get('/roles', async (_, res) =>
 {
-	const rolesData = await Role.getAll();
+	const roles = await Role.getAll();
 
 	res.json({
 		code: 0,
 		data: {
-			roles: rolesData,
+			roles: roles.map((role) => ({
+				id: role.id,
+				name: role.name,
+				permissions: role.permissions,
+			})),
 		},
 	});
 });
