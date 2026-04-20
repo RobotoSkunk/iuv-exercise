@@ -26,7 +26,7 @@ import databaseClient from './database';
 
 	app.use(express.json());
 	app.use('/', router);
-	app.use('*', (_, res) =>
+	app.use((_, res) =>
 	{
 		res.status(400).json({
 			code: 1,
