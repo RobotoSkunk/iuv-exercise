@@ -1,0 +1,144 @@
+
+:root {
+	--background: #eff4fa;
+	--foreground: #171717;
+	--border-color: #353574;
+}
+
+html,
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 100vw;
+	height: 100vh;
+
+	margin: 0;
+	padding: 0;
+
+	background: var(--background);
+	color: var(--foreground);
+
+	perspective: 2640px;
+}
+
+button {
+	cursor: pointer;
+	outline: none;
+}
+
+input,
+button:not(.raw) {
+	border-radius: 8px;
+	padding: 10px 14px;
+
+	width: calc(100% - 28px);
+	outline: none;
+
+	font: inherit;
+	background: white;
+	border: 1px solid #353574;
+}
+
+button:not(.raw) {
+	width: 100%;
+
+	margin-top: 20px;
+	margin-bottom: 16px;
+
+	background: var(--border-color);
+	color: var(--background);
+
+	font-weight: bold;
+
+	transition: background 0.2s ease, color 0.2s ease;
+
+	&:hover,
+	&:focus-visible {
+		background: white;
+		color: var(--border-color);
+	}
+}
+
+label {
+	position: relative;
+	margin: 10px 0;
+	width: 100%;
+
+	& span {
+		position: absolute;
+		top: 50%;
+		left: 10px;
+		scale: 1;
+		padding: 0 4px;
+
+		transform: translate(0%, -50%);
+		background: white;
+
+		cursor: text;
+		transition: top 0.2s ease-in-out, left 0.2s ease-in-out, scale 0.2s ease-in-out;
+	}
+
+	&:has(input:focus) span,
+	&:has(input:not(:placeholder-shown)) span {
+		top: 0px;
+		left: 0px;
+		scale: 0.8;
+	}
+
+	& button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: absolute;
+		right: -2px;
+		top: 0;
+
+		margin: 0;
+		padding: 0;
+		border: 0;
+		border-radius: 0 8px 8px 0;
+		border-left: 1px solid var(--border-color);
+		background: transparent;
+
+		height: 100%;
+		width: 50px;
+
+		transition: background 0.2s ease;
+
+		& img {
+			transition: filter 0.2s ease;
+		}
+
+		&:hover,
+		&:focus-visible {
+			background: var(--border-color);
+
+			& img {
+				filter: invert(1);
+			}
+		}
+	}
+}
+
+.shield,
+.lion {
+	position: absolute;
+	opacity: 0.3;
+	user-select: none;
+}
+
+.lion {
+	top: 0;
+	left: 0;
+
+	height: 100%;
+	opacity: 0.3;
+}
+
+.shield {
+	right: 20px;
+	bottom: 20px;
+}

@@ -1,0 +1,20 @@
+
+
+.form {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	background: white;
+	padding: 8px 22px;
+	border-radius: 8px;
+	border: 1px solid var(--border-color);
+
+	box-shadow: 0 0 15px #00000040, 0 0 75px #00000030;
+	z-index: 1;
+
+	& h1 {
+		font-size: 1.4em;
+		margin-top: 6px;
+	}
+}
