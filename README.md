@@ -104,8 +104,9 @@ el directorio [src/entities](modules/database/src/entities) del módulo.
 ## Extensiones recomendadas para Visual Studio Code
 
 Una extensión recomendada para ejecutar pruebas con los módulos es
-[REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client), esta extensión sirve para realizar peticiones HTTP a cada módulo sin necesidad de
-programas de terceros como Postman.
+[REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client),
+esta extensión sirve para realizar peticiones HTTP a cada módulo sin necesidad
+de programas de terceros como Postman.
 
 Dentro del directorio de cada ḿodulo, se encuentra un archivo `tests.http` que
 se usó con dicha extensión para realizar las pruebas de funcionamiento de cada
