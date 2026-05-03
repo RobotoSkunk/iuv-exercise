@@ -29,7 +29,7 @@ export default function Page()
 	}, [ ]);
 
 	return (<>
-		<h1 className='title'>Administradores</h1>
+		<h1 style={{ marginLeft: 52 }}>Administradores</h1>
 		<table>
 			<thead>
 				<tr>
