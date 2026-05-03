@@ -19,7 +19,6 @@ La estructura actual del proyecto es la siguiente.
 └── README.md
 ```
 
-
 ## Requisitos
 - Sistema operativo basado en Unix
 - Node.js >= 24
@@ -93,6 +92,24 @@ node
 
 Por ahora, el código de `checkout` es demasiado simple, puesto a que es parte de
 la primera iteración del proyecto.
+
+### Ejecución del módulo `frontend`
+
+Asumiendo que se encuentra en el directorio raíz del proyecto, nuevamente, los
+pasos para ejecutar el frontend son los siguientes.
+
+```bash
+cd module/frontend
+
+# Ejecución en modo de desarrollador
+npm run dev
+```
+
+Luego de eso, acceda al proyecto por medio de `http://127.0.0.1:3000/` desde
+un navegador.
+
+> **Recordatorio**: el módulo requiere que los otros dos módulos estén en
+ejecución, principalmente el módulo `database`.
 
 ## Diagrama de clases
 
