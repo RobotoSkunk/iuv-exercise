@@ -27,6 +27,13 @@ declare global {
 		lastname_father: string;
 		lastname_mother: string;
 	}
+
+	interface AttendanceData
+	{
+		id: string;
+		is_entry: boolean;
+		created_at: number;
+	}
 }
 
 export { };

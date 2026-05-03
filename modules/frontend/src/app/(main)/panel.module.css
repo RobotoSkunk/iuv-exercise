@@ -1,7 +1,23 @@
 
 .form {
-	display: inline-flex;
-	flex-direction: column;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-	margin: 18px auto;
+	margin: 32px auto;
+	gap: 12px;
+}
+
+.title {
+	text-align: center;
+}
+
+.input-label {
+	position: relative;
+
+	& span {
+		position: absolute;
+		left: 8px;
+		top: -24px;
+	}
 }

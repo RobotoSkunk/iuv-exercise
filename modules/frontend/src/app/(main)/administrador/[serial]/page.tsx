@@ -37,6 +37,7 @@ export default function Page({
 	}
 
 	return (<>
+		<h1 className={ panelStyle.title }>Información del Administrador</h1>
 		<form
 			className={ panelStyle.form }
 			onSubmit={ (ev) => {
@@ -45,10 +46,19 @@ export default function Page({
 				
 			} }
 		>
-			<h1></h1>
-			<input type='text' name='name' defaultValue={ adminData.name }/>
-			<input type='text' name='lastname-father' defaultValue={ adminData.lastname_father }/>
-			<input type='text' name='lastname-mother' defaultValue={ adminData.lastname_mother }/>
+			<label className={ panelStyle['input-label'] }>
+				<span>Nombre</span>
+				<input type='text' name='name' defaultValue={ adminData.name }/>
+			</label>
+			<label className={ panelStyle['input-label'] }>
+				<span>Apellido Paterno</span>
+				<input type='text' name='lastname-father' defaultValue={ adminData.lastname_father }/>
+			</label>
+			<label className={ panelStyle['input-label'] }>
+				<span>Apellido Materno</span>
+				<input type='text' name='lastname-mother' defaultValue={ adminData.lastname_mother }/>
+			</label>
+
 			<button>Actualizar datos</button>
 		</form>
 	</>);

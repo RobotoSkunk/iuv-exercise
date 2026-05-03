@@ -46,6 +46,10 @@ button {
 	}
 }
 
+button {
+	cursor: pointer;
+}
+
 .dashboard {
 	display: flex;
 	flex-direction: row;

@@ -129,7 +129,7 @@ teachersRouter.get('/teacher/:id/attendances/:from/:to', async (req, res) =>
 			attendances: attendances.map((value) => ({
 				id: value.id,
 				is_entry: value.isEntry,
-				created_at: value.createdAt,
+				created_at: value.createdAt.getTime(),
 			})),
 		},
 	});
