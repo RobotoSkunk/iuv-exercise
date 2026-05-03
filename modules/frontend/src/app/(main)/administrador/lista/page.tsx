@@ -61,7 +61,7 @@ export default function Page()
 						<td>{ v.serial }</td>
 						<td>{ v.name }</td>
 						<td>{ v.lastname_father }</td>
-						<td>{ v.lastname_father }</td>
+						<td>{ v.lastname_mother }</td>
 						<td>{ v.role }</td>
 						<td>
 							<Link
@@ -156,10 +156,10 @@ export default function Page()
 							<input type='text' name='name' required/>
 						</td>
 						<td>
-							<input type='text' name='lastname_mother' required/>
+							<input type='text' name='lastname_father' required/>
 						</td>
 						<td>
-							<input type='text' name='lastname_father' required/>
+							<input type='text' name='lastname_mother' required/>
 						</td>
 						<td>
 							<select name='role_id'>
