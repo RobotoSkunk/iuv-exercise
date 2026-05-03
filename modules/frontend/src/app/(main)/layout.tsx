@@ -8,13 +8,14 @@ import {
 } from 'next/font/google';
 
 import './globals.css';
+import Dashboard from './dashboard';
 
 const notoSans = Noto_Sans({
 	subsets: [ 'latin' ],
 });
 
 export const metadata: Metadata = {
-	title: 'ESBO Portal Docente',
+	title: 'Portal ESBO',
 };
 
 export default function RootLayout({
@@ -25,7 +26,11 @@ export default function RootLayout({
 {
 	return (
 		<html lang='es' className={ notoSans.className } suppressHydrationWarning>
-			<body>{children}</body>
+			<body>
+				<Dashboard>
+					{ children }
+				</Dashboard>
+			</body>
 		</html>
 	);
 }

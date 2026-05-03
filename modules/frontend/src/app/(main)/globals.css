@@ -3,6 +3,9 @@
 	--background: #ffffff;
 	--foreground: #171717;
 	--border-color: #353574;
+
+	--background-secondary: #1e40af;
+	--background-secondary-active: #60a5fa;
 }
 
 html,
@@ -15,4 +18,81 @@ body {
 
 	background: var(--background);
 	color: var(--foreground);
+}
+
+.dashboard {
+	display: flex;
+	flex-direction: row;
+
+	width: 100vw;
+	height: 100vh;
+
+	& > nav {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		background: var(--background-secondary);
+		width: 280px;
+
+		& .links {
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		& a {
+			display: flex;
+			align-items: center;
+
+			position: relative;
+			width: 100%;
+			padding: 14px 0;
+
+			color: white;
+			text-decoration: none;
+			font-weight: bold;
+
+			transition: color 0.2s ease;
+
+			& img {
+				padding: 0 14px;
+				filter: invert(1);
+
+				transition: filter 0.2s ease;
+			}
+
+			& .background {
+				position: absolute;
+				top: 0;
+				left: 0;
+				bottom: 0;
+				right: 100%;
+
+				background: var(--background-secondary-active);
+				transition: right 0.23s ease-in-out;
+			}
+
+			& span {
+				z-index: 1;
+			}
+
+			&:hover,
+			&:focus-visible {
+				color: var(--foreground);
+
+				& img {
+					filter: invert(0);
+				}
+
+				& .background {
+					right: 0%;
+				}
+			}
+		}
+	}
+
+	& > main {
+		flex-grow: 1;
+	}
 }
