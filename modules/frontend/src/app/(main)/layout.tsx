@@ -15,7 +15,7 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
-	title: 'Portal ESBO',
+	title: 'Portal E.S.B.O.',
 };
 
 export default function RootLayout({

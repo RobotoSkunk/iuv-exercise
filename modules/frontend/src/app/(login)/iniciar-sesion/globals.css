@@ -1,8 +1,13 @@
 
 :root {
-	--background: #eff4fa;
-	--foreground: #171717;
-	--border-color: #353574;
+	--background: #eff6ff;
+	--foreground: #0f172a;
+	--border-color: #312e81;
+}
+
+::selection {
+	background: #38bdf8;
+	color: var(--foreground);
 }
 
 html,

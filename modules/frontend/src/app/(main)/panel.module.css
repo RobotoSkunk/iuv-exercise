@@ -1,0 +1,7 @@
+
+.form {
+	display: inline-flex;
+	flex-direction: column;
+
+	margin: 18px auto;
+}

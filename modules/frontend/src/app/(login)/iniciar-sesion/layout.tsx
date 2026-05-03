@@ -19,7 +19,7 @@ const notoSans = Noto_Sans({
 });
 
 export const metadata: Metadata = {
-	title: 'ESBO Portal Docente',
+	title: 'Iniciar Sesión',
 };
 
 export default function RootLayout({
