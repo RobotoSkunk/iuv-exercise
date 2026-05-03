@@ -38,7 +38,7 @@ button:not(.raw) {
 
 	font: inherit;
 	background: white;
-	border: 1px solid #353574;
+	border: 1px solid var(--border-color);
 }
 
 button:not(.raw) {
@@ -65,6 +65,8 @@ label {
 	position: relative;
 	margin: 10px 0;
 	width: 100%;
+
+	user-select: none;
 
 	& span {
 		position: absolute;
@@ -135,6 +137,8 @@ label {
 	left: 0;
 
 	height: 100%;
+	width: auto;
+
 	opacity: 0.3;
 }
 
