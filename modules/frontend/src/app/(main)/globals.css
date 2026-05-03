@@ -26,7 +26,8 @@ body {
 }
 
 input,
-button {
+button,
+select {
 	padding: 8px 12px;
 	border: 1px solid var(--border-color);
 	border-radius: 8px;

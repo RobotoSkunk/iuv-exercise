@@ -82,6 +82,8 @@ export default function Page()
 					return;
 				}
 
+				setBusy(true);
+
 				const formData = new FormData(ev.currentTarget);
 				const data: { [ key: string ]: string } = { };
 
@@ -89,23 +91,28 @@ export default function Page()
 					data[key] = value as string;
 				}
 
-				console.log(data);
+				try {
+					const response = await fetch('/api/teacher', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(data),
+					});
 
-				const response = await fetch('/api/teacher', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				});
+					const json = await response.json() as { code: number, error?: string };
 
-				const json = await response.json() as { code: number, error?: string };
-
-				if (!json.error) {
-					form.reset();
-					await fetchTeachers();
-				} else {
-					alert(json.error);
+					if (!json.error) {
+						form.reset();
+						await fetchTeachers();
+					} else {
+						alert(json.error);
+					}
+				} catch (error) {
+					alert('Algo ha salido mal, intenta de nuevo más tarde');
+					console.error(error);
+				} finally {
+					setBusy(false);
 				}
 			} }
 		>
@@ -116,7 +123,7 @@ export default function Page()
 						<th>Nombre</th>
 						<th>Apellido Paterno</th>
 						<th>Apellido Materno</th>
-						<th>Administrar</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
