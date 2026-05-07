@@ -4,9 +4,6 @@
   "description": "The checkout module for the project.",
   "type": "commonjs",
   "main": "dist/index.js",
-  "scripts": {
-    "migration:create": "ts-node ./scripts/migration-create.ts"
-  },
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
