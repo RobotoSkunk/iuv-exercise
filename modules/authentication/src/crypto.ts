@@ -14,14 +14,20 @@ function parseToken(token: string)
 	return parts;
 }
 
-function generateKeyPairs()
+function generateTokenParts()
 {
-	const bytes = crypto.randomBytes(24);
+	const bytes = crypto.randomBytes(48);
 	const hash = crypto.hash(algo, bytes);
 
+	const idBytes = crypto.randomBytes(24);
+
+	const id = idBytes.toString('base64url');
+	const key = bytes.toString('base64url');
+
 	return {
-		key: bytes.toString('base64url'),
+		id,
 		hash,
+		token: `${id}.${key}`,
 	};
 }
 
@@ -53,6 +59,6 @@ function safeCompare(a: string, b: string)
 
 export {
 	parseToken,
-	generateKeyPairs,
+	generateTokenParts,
 	verifyHash,
 };
