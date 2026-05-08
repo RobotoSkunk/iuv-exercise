@@ -6,6 +6,8 @@ import express from 'express';
 
 import {
 	generateTokenParts,
+	parseToken,
+	verifyHash,
 } from './crypto';
 
 const app = express();
@@ -77,6 +79,63 @@ app.post('/generate', async (req, res) =>
 		code: 0,
 		data: {
 			token,
+		},
+	});
+});
+
+app.post('/authenticate', async (req, res) =>
+{
+	const data: {
+		token: string;
+	} = req.body;
+
+	const [ id, key ] = parseToken(data.token);
+
+	let userId: string;
+	let hash: string;
+	let expiresAt: Date;
+
+	{
+		const request = await fetch(`${host}/token/${id}`);
+		const json = await request.json() as {
+			code: number;
+			data: {
+				user_id: string;
+				hash: string;
+				expires_at: string;
+			};
+		};
+
+		if (json.code !== 0) {
+			res.json({
+				code: 1,
+			});
+			return;
+		}
+
+		userId = json.data.user_id;
+		hash = json.data.hash;
+		expiresAt = new Date(json.data.expires_at);
+	}
+
+	if (!verifyHash(key, hash)) {
+		res.json({
+			code: 1,
+		});
+		return;
+	}
+
+	if (expiresAt.getTime() < Date.now()) {
+		res.json({
+			code: 1,
+		});
+		return;
+	}
+
+	res.json({
+		code: 0,
+		data: {
+			user_id: userId,
 		},
 	});
 });

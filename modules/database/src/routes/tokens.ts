@@ -26,7 +26,11 @@ tokensRouter.get('/token/:id', async (req, res) =>
 
 	res.json({
 		code: 0,
-		data: tokenData,
+		data: {
+			user_id: tokenData.user_id,
+			hash: tokenData.hmac_hash,
+			expires_at: tokenData.expires_at?.toISOString(),
+		},
 	});
 });
 
@@ -52,10 +56,14 @@ tokensRouter.patch('/token/:id', async (req, res) =>
 		hmac: string,
 	} = req.body;
 
+	const expiresAt = new Date();
+	expiresAt.setHours(expiresAt.getHours() + 1);
+
 	await client.connection
 		.updateTable('auth_tokens')
 		.set({
 			hmac_hash: body.hmac,
+			expires_at: expiresAt,
 		})
 		.where('id', '=', tokenId)
 		.execute();
