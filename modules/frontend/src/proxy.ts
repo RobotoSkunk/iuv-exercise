@@ -51,7 +51,7 @@ export default async function proxy(request: NextRequest)
 		return NextResponse.redirect(new URL('/', request.nextUrl));
 
 	} else if (!isSigninPath && !userId) {
-		return NextResponse.redirect(new URL('/iniciar-sesion', request.nextUrl));
+		return NextResponse.redirect(new URL(`/iniciar-sesion?redirect=${request.nextUrl.pathname}`, request.nextUrl));
 	}
 
 

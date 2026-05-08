@@ -7,6 +7,7 @@ import {
 
 import {
 	useRouter,
+	useSearchParams,
 } from 'next/navigation';
 
 import Image from 'next/image';
@@ -19,6 +20,7 @@ import style from './page.module.css';
 export default function Page()
 {
 	const router = useRouter();
+	const params = useSearchParams();
 
 	const [ busy, setBusy ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false);
@@ -60,7 +62,13 @@ export default function Page()
 					return;
 				}
 
-				router.push('/');
+				const redirectUrl = params.get('redirect');
+
+				if (redirectUrl && redirectUrl.startsWith('/')) {
+					router.push(redirectUrl);
+				} else {
+					router.push('/');
+				}
 			} }
 		>
 			<h1>INICIO DE SESIÓN DEL EMPLEADO</h1>
