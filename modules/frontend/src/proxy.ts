@@ -11,7 +11,7 @@ import {
 export const config = {
 	matcher: [
 		{
-			source: '/((?!assets|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)',
+			source: '/((?!assets|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/admin/auth).*)',
 			missing: [
 				{ type: 'header', key: 'next-router-prefetch' },
 				{ type: 'header', key: 'purpose', value: 'prefetch' },
@@ -32,14 +32,16 @@ export default async function proxy(request: NextRequest)
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ token: authToken }),
+			body: JSON.stringify({ token: authToken.value }),
 		});
 
 		const fetchJson = await fetchResponse.json() as { code: number, data: { user_id: string } };
+		console.log(fetchJson);
 
 		if (fetchJson.code === 0) {
 			userId = fetchJson.data.user_id;
-			return NextResponse.redirect(new URL('/iniciar-sesion', request.nextUrl));
+		} else {
+			cookie.delete('auth_token');
 		}
 	}
 

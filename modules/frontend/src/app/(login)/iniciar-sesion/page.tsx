@@ -5,6 +5,10 @@ import {
 	useState,
 } from 'react';
 
+import {
+	useRouter,
+} from 'next/navigation';
+
 import Image from 'next/image';
 
 import eyeIcon from '@/assets/icon/eye.svg';
@@ -14,19 +18,74 @@ import style from './page.module.css';
 
 export default function Page()
 {
+	const router = useRouter();
+
+	const [ busy, setBusy ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false);
 
 	return (
-		<form className={ style.form }>
+		<form
+			action='POST'
+			className={ style.form }
+			onSubmit={ async (ev) =>
+			{
+				ev.preventDefault();
+
+				const form = ev.currentTarget;
+
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
+
+				const formData = new FormData(form);
+				const data: { [ key: string ]: string } = {};
+
+				for (const [ key, value ] of formData.entries()) {
+					data[key] = value as string;
+				}
+
+				const response = await fetch(`/api/admin/auth`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(data),
+				});
+
+				const json = await response.json() as { code: number, error?: string };
+
+				if (json.code !== 0) {
+					alert(json.error);
+					return;
+				}
+
+				router.push('/');
+			} }
+		>
 			<h1>INICIO DE SESIÓN DEL EMPLEADO</h1>
 
 			<label htmlFor='user-id'>
-				<input type='text' id='user-id' placeholder=' '/>
+				<input
+					type='text'
+					name='serial'
+					id='user-id'
+					placeholder=' '
+					disabled={ busy }
+					required
+				/>
 				<span>Clave de Empleado</span>
 			</label>
 
 			<label htmlFor='password'>
-				<input type={ showPassword ? 'text' : 'password' } id='password' placeholder=' '/>
+				<input
+					type={ showPassword ? 'text' : 'password' }
+					name='password'
+					id='password'
+					placeholder=' '
+					disabled={ busy }
+					required
+				/>
 				<span>Contraseña</span>
 				<button
 					className='raw'
@@ -45,7 +104,7 @@ export default function Page()
 				</button>
 			</label>
 
-			<button>Autenticar</button>
+			<button disabled={ busy }>Autenticar</button>
 		</form>
 	);
 }

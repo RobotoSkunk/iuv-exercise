@@ -45,6 +45,8 @@ app.post('/generate', async (req, res) =>
 			return;
 		}
 	} catch (error) {
+		console.error(error);
+
 		res.json({
 			code: -1,
 			error: 'Something went wrong',
@@ -63,11 +65,13 @@ app.post('/generate', async (req, res) =>
 			},
 			body: JSON.stringify({
 				id,
-				hmac_hash: hash,
+				hmac: hash,
 				user_id: data.serial,
 			}),
 		});
 	} catch (error) {
+		console.error(error);
+
 		res.json({
 			code: -1,
 			error: 'Something went wrong',
@@ -137,6 +141,14 @@ app.post('/authenticate', async (req, res) =>
 		data: {
 			user_id: userId,
 		},
+	});
+});
+
+app.all('/', (_, res) =>
+{
+	res.status(400).json({
+		code: -1,
+		error: 'Bad Request',
 	});
 });
 

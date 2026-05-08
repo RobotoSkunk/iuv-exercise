@@ -82,12 +82,16 @@ tokensRouter.post('/token', async (req, res) =>
 		user_id: string,
 	} = req.body;
 
+	const expiresAt = new Date();
+	expiresAt.setHours(expiresAt.getHours() + 1);
+
 	await client.connection
 		.insertInto('auth_tokens')
 		.values({
 			id: body.id,
 			hmac_hash: body.hmac,
 			user_id: body.user_id,
+			expires_at: expiresAt,
 		})
 		.execute();
 
