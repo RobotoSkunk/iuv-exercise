@@ -11,7 +11,7 @@ import {
 export const config = {
 	matcher: [
 		{
-			source: '/((?!assets|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/admin/auth).*)',
+			source: '/((?!assets|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|api/auth).*)',
 			missing: [
 				{ type: 'header', key: 'next-router-prefetch' },
 				{ type: 'header', key: 'purpose', value: 'prefetch' },

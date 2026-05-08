@@ -1,12 +1,16 @@
 
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
+import {
+	useRouter,
+} from 'next/navigation';
 
 import {
 	Alfa_Slab_One,
 } from 'next/font/google';
+
+import Link from 'next/link';
+import Image from 'next/image';
 
 import houseIcon from '@/assets/icon/house.svg';
 import userShieldIcon from '@/assets/icon/user-shield.svg';
@@ -21,6 +25,8 @@ export default function Dashboard({
 	children: React.ReactNode;
 })
 {
+	const router = useRouter();
+
 	return (
 		<div
 			className='dashboard'
@@ -63,7 +69,16 @@ export default function Dashboard({
 					</Link>
 				</div>
 				<div>
-					<Link href='#'>
+					<Link
+						href='/iniciar-sesion'
+						onClick={ async (ev) => {
+							ev.preventDefault();
+
+							await fetch('/api/auth/logout', { method: 'POST' });
+
+							router.push('/iniciar-sesion');
+						}}
+					>
 						<div className='background'/>
 						<Image
 							src={ doorOpenIcon }

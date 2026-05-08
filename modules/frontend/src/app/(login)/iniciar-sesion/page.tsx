@@ -45,7 +45,7 @@ export default function Page()
 					data[key] = value as string;
 				}
 
-				const response = await fetch(`/api/admin/auth`, {
+				const response = await fetch(`/api/auth/login`, {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
