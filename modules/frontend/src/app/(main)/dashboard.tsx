@@ -16,6 +16,7 @@ import houseIcon from '@/assets/icon/house.svg';
 import userShieldIcon from '@/assets/icon/user-shield.svg';
 import bookUserIcon from '@/assets/icon/book-user.svg';
 import doorOpenIcon from '@/assets/icon/door-open.svg';
+import gearIcon from '@/assets/icon/gear.svg';
 
 const alfaSlabOneFont = Alfa_Slab_One({ weight: '400' });
 
@@ -66,6 +67,16 @@ export default function Dashboard({
 							height={ 20 }
 						/>
 						<span>Docentes</span>
+					</Link>
+					<Link href='/roles/lista'>
+						<div className='background'/>
+						<Image
+							src={ gearIcon }
+							alt=''
+							width={ 20 }
+							height={ 20 }
+						/>
+						<span>Roles</span>
 					</Link>
 				</div>
 				<div>
