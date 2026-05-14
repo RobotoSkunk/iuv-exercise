@@ -68,7 +68,7 @@ export default function Dashboard({
 						/>
 						<span>Docentes</span>
 					</Link>
-					<Link href='/roles/lista'>
+					<Link href='/rol'>
 						<div className='background'/>
 						<Image
 							src={ gearIcon }

@@ -1,0 +1,50 @@
+
+.panel {
+	--border: 1px solid var(--border-color);
+
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: stretch;
+
+	width: calc(100% - 100px);
+	height: calc(95vh - 100px);
+
+	margin: 0 auto;
+	border-radius: 12px;
+	overflow: hidden;
+
+	border: var(--border);
+}
+
+.list {
+	width: 300px;
+	height: 100%;
+
+	border-right: var(--border);
+
+	& .button {
+		position: relative;
+		border-width: 0 0 1px 0;
+		border-radius: 0;
+		width: 100%;
+		background: var(----background);
+		font-weight: bold;
+		padding: 12px 0;
+
+		transition: background 0.2s;
+
+		&:hover,
+		&:focus-visible {
+			background: var(--background-secondary-active);
+		}
+
+		& img {
+			position: absolute;
+			right: 12px;
+			top: 50%;
+
+			transform: translateY(-50%);
+		}
+	}
+}
