@@ -284,13 +284,32 @@ export default function Page({
 					>
 						Actualizar
 					</button>
-					{ ' ' }
 					<button
-						style={{ display: 'inline-block' }}
-						onClick={ (ev) =>
+						style={{
+							display: 'inline-block',
+							marginLeft: 12,
+						}}
+						onClick={ async (ev) =>
 						{
 							ev.preventDefault();
-							notificationsContext.push('alert', 'something at ' + Date.now());
+
+							const answer = confirm(
+								'¿Estás seguro de eliminar este rol? Esto eliminará a todos los administradores ' +
+								'adjuntos a este.'
+							);
+
+							if (!answer) {
+								return;
+							}
+
+							await fetch(`/api/role/${roleId}`, {
+								method: 'DELETE',
+							});
+
+							await rolesContext.updateRoles();
+
+							notificationsContext.push('success', 'Se ha eliminado el rol solicitado.');
+							router.push('/rol');
 						} }
 					>
 						Eliminar

@@ -25,3 +25,19 @@ export async function GET(_: NextRequest, {
 		},
 	});
 }
+
+
+export async function DELETE(_: NextRequest, {
+	params,
+}: {
+	params: Promise<{ id: number }>;
+})
+{
+	const { id } = await params;
+
+	await fetch(`http://127.0.0.1:5001/role/${id}`, { method: 'DELETE' });
+
+	return Response.json({
+		code: 0,
+	});
+}

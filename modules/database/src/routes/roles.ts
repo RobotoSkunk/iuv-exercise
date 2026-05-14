@@ -91,4 +91,24 @@ rolesRouter.patch('/role/:id', async (req, res) =>
 	});
 });
 
+rolesRouter.delete('/role/:id', async (req, res) =>
+{
+	const roleId = Number.parseInt(req.params.id);
+	const role = await Role.getById(roleId);
+
+	if (!role) {
+		res.status(403).json({
+			code: 1,
+			error: 'not_found',
+		});
+		return;
+	}
+
+	await role.delete();
+
+	res.json({
+		code: 0,
+	});
+});
+
 export default rolesRouter;

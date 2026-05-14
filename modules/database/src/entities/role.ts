@@ -42,6 +42,14 @@ class Role implements Entity
 		return this.permissions.includes(permission);
 	};
 
+	public async delete()
+	{
+		await client.connection
+			.deleteFrom('roles')
+			.where('id', '=', this._id)
+			.executeTakeFirst();
+	};
+
 	public static async register(name: string, permissions: string[])
 	{
 		await client.connection
