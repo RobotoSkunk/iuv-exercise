@@ -3,7 +3,9 @@
 
 import {
 	use,
+	useContext,
 	useEffect,
+	useLayoutEffect,
 	useState,
 } from 'react';
 
@@ -15,6 +17,10 @@ import {
 import {
 	useRouter,
 } from 'next/navigation';
+
+import {
+	RolesContext,
+} from '../layout';
 
 import Image from 'next/image';
 
@@ -112,12 +118,13 @@ export default function Page({
 {
 	const roleId = (use(params).role_id ?? [])[0];
 	const router = useRouter();
+	const rolesContext = useContext(RolesContext);
 
 	const [ roleData, setRoleData ] = useState<RoleData | null>(null);
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ loading, setLoading ] = useState<boolean>(true);
 
-	useEffect(() =>
+	useLayoutEffect(() =>
 	{
 		setLoading(false);
 
@@ -223,6 +230,7 @@ export default function Page({
 					if (json.error) {
 						alert(json.error);
 					} else {
+						rolesContext.updateRoles();
 						router.push('/rol');
 					}
 				} catch (error) {
@@ -259,12 +267,12 @@ export default function Page({
 			<hr className={ style.separator }/>
 			<section>
 			{ roleId === 'nuevo' ?
-				<button disabled={ busy }>Crear rol</button>
+				<button disabled={ busy }>Crear</button>
 				:
 				<>
-					<button style={{ display: 'inline-block' }}>Actualizar rol</button>
+					<button style={{ display: 'inline-block' }}>Actualizar</button>
 					{ ' ' }
-					<button style={{ display: 'inline-block' }}>Eliminar rol</button>
+					<button style={{ display: 'inline-block' }}>Eliminar</button>
 				</>
 			}
 			</section>
