@@ -24,6 +24,10 @@
 	border-right: var(--border);
 
 	& .button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
 		position: relative;
 		border-width: 0 0 1px 0;
 		border-radius: 0;
@@ -39,12 +43,27 @@
 			background: var(--background-secondary-active);
 		}
 
-		& img {
+		&:last-child {
+			border-radius: 0 0 12px 12px;
+		}
+
+		& .arrow {
+			display: flex;
+
 			position: absolute;
 			right: 12px;
 			top: 50%;
-
 			transform: translateY(-50%);
 		}
+
+		& .plus {
+			margin-right: 8px;
+		}
 	}
+}
+
+.config {
+	padding: 12px;
+	flex-grow: 1;
+	height: calc(100% - 24px);
 }

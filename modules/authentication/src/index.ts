@@ -136,6 +136,8 @@ app.post('/authenticate', async (req, res) =>
 		return;
 	}
 
+	await fetch(`${host}/token/${id}/update-expiration`);
+
 	res.json({
 		code: 0,
 		data: {

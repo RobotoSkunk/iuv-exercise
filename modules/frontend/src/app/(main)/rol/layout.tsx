@@ -12,6 +12,7 @@ import Image from 'next/image';
 import style from './layout.module.css';
 
 import arrowRightIcon from '@/assets/icon/arrow-right.svg';
+import plusIcon from '@/assets/icon/plus.svg';
 
 export default function Page({
 	children,
@@ -47,7 +48,7 @@ export default function Page({
 						<span>
 							{ v.name }
 						</span>
-						<div>
+						<div className={ style.arrow }>
 							<Image
 								src={ arrowRightIcon }
 								width={ 26 }
@@ -57,6 +58,22 @@ export default function Page({
 						</div>
 					</Link>
 				)) }
+
+				<Link
+					href={ `/rol/nuevo` }
+					className={ 'button ' + style.button }
+				>
+					<Image
+						src={ plusIcon }
+						width={ 26 }
+						height={ 26 }
+						alt=''
+						className={ style.plus }
+					/>
+					<span>
+						Crear nuevo rol
+					</span>
+				</Link>
 			</div>
 			<div className={ style.config }>
 				{ children }

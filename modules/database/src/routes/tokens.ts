@@ -48,13 +48,9 @@ tokensRouter.delete('/token/:id', async (req, res) =>
 	});
 });
 
-tokensRouter.patch('/token/:id', async (req, res) =>
+tokensRouter.post('/token/:id/update-expiration', async (req, res) =>
 {
 	const tokenId = req.params.id;
-
-	const body: {
-		hmac: string,
-	} = req.body;
 
 	const expiresAt = new Date();
 	expiresAt.setHours(expiresAt.getHours() + 1);
@@ -62,7 +58,6 @@ tokensRouter.patch('/token/:id', async (req, res) =>
 	await client.connection
 		.updateTable('auth_tokens')
 		.set({
-			hmac_hash: body.hmac,
 			expires_at: expiresAt,
 		})
 		.where('id', '=', tokenId)

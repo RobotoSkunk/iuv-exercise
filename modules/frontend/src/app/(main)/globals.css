@@ -38,7 +38,6 @@ select {
 	font: inherit;
 	font-size: inherit;
 	text-decoration: none;
-	text-align: center;
 
 	color: var(--foreground);
 	background: #f8fafc;
@@ -54,6 +53,7 @@ select {
 button,
 .button {
 	cursor: pointer;
+	text-align: center;
 }
 
 .dashboard {
