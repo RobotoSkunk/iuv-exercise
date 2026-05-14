@@ -34,6 +34,16 @@ declare global {
 		is_entry: boolean;
 		created_at: number;
 	}
+
+
+	type NotificationTypes = 'info' | 'success' | 'alert' | 'error';
+
+	interface PanelNotification
+	{
+		id: number;
+		type: NotificationTypes;
+		content: string;
+	}
 }
 
 export { };

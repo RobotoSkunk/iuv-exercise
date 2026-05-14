@@ -4,7 +4,6 @@
 import {
 	use,
 	useContext,
-	useEffect,
 	useLayoutEffect,
 	useState,
 } from 'react';
@@ -21,6 +20,10 @@ import {
 import {
 	RolesContext,
 } from '../layout';
+
+import {
+	NotificationsContext,
+} from '@/contexts/notifications';
 
 import Image from 'next/image';
 
@@ -119,6 +122,7 @@ export default function Page({
 	const roleId = (use(params).role_id ?? [])[0];
 	const router = useRouter();
 	const rolesContext = useContext(RolesContext);
+	const notificationsContext = useContext(NotificationsContext);
 
 	const [ roleData, setRoleData ] = useState<RoleData | null>(null);
 	const [ busy, setBusy ] = useState<boolean>(false);
@@ -270,9 +274,27 @@ export default function Page({
 				<button disabled={ busy }>Crear</button>
 				:
 				<>
-					<button style={{ display: 'inline-block' }}>Actualizar</button>
+					<button
+						style={{ display: 'inline-block' }}
+						onClick={ (ev) =>
+						{
+							ev.preventDefault();
+							notificationsContext.push('alert', 'something at ' + Date.now());
+						} }
+					>
+						Actualizar
+					</button>
 					{ ' ' }
-					<button style={{ display: 'inline-block' }}>Eliminar</button>
+					<button
+						style={{ display: 'inline-block' }}
+						onClick={ (ev) =>
+						{
+							ev.preventDefault();
+							notificationsContext.push('alert', 'something at ' + Date.now());
+						} }
+					>
+						Eliminar
+					</button>
 				</>
 			}
 			</section>
