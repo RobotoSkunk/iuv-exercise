@@ -48,18 +48,6 @@ const permissionsData: {
 		name: 'Eliminar administradores',
 	},
 	{
-		intent: 'teacher.create',
-		name: 'Registrar personal docente',
-	},
-	{
-		intent: 'teacher.edit',
-		name: 'Editar personal docente',
-	},
-	{
-		intent: 'teacher.delete',
-		name: 'Eliminar personal docente del sistema',
-	},
-	{
 		intent: 'role.create',
 		name: 'Crear roles',
 	},
@@ -70,6 +58,18 @@ const permissionsData: {
 	{
 		intent: 'role.delete',
 		name: 'Eliminar roles',
+	},
+	{
+		intent: 'teacher.create',
+		name: 'Registrar personal docente',
+	},
+	{
+		intent: 'teacher.edit',
+		name: 'Editar personal docente',
+	},
+	{
+		intent: 'teacher.delete',
+		name: 'Eliminar personal docente del sistema',
 	},
 ];
 
@@ -215,27 +215,51 @@ export default function Page({
 				};
 				formData.delete('name');
 
+				let editing = false;
+				if (formData.has('editing')) {
+					editing = true;
+					formData.delete('editing');
+				}
+
 				for (const [ key, _ ] of formData.entries()) {
 					data.permissions.push(key);
 				}
 
 				try {
-					
-					const response = await fetch('/api/role', {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						},
-						body: JSON.stringify(data),
-					});
+					if (editing) {
+						const response = await fetch(`/api/role/${roleId}`, {
+							method: 'PATCH',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(data),
+						});
 
-					const json = await response.json() as { code: number, error?: string };
+						const json = await response.json() as { code: number, error?: string };
 
-					if (json.error) {
-						alert(json.error);
+						if (json.error) {
+							alert(json.error);
+						} else {
+							await rolesContext.updateRoles();
+							notificationsContext.push('success', 'Se ha actualizado el rol.');
+						}
 					} else {
-						rolesContext.updateRoles();
-						router.push('/rol');
+						const response = await fetch('/api/role', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(data),
+						});
+
+						const json = await response.json() as { code: number, error?: string };
+
+						if (json.error) {
+							alert(json.error);
+						} else {
+							await rolesContext.updateRoles();
+							router.push('/rol');
+						}
 					}
 				} catch (error) {
 					alert('Algo ha salido mal, intenta de nuevo más tarde');
@@ -274,13 +298,9 @@ export default function Page({
 				<button disabled={ busy }>Crear</button>
 				:
 				<>
+					<input type='hidden' name='editing' value='1'/>
 					<button
 						style={{ display: 'inline-block' }}
-						onClick={ (ev) =>
-						{
-							ev.preventDefault();
-							notificationsContext.push('alert', 'something at ' + Date.now());
-						} }
 					>
 						Actualizar
 					</button>
