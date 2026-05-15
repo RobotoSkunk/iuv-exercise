@@ -2,6 +2,7 @@
 'use client';
 
 import {
+	Suspense,
 	useState,
 } from 'react';
 
@@ -17,10 +18,10 @@ import eyeSlashIcon from '@/assets/icon/eye-slash.svg';
 
 import style from './page.module.css';
 
-export default function Page()
+function Form()
 {
 	const router = useRouter();
-	const params = useSearchParams();
+	const redirectUrl = useSearchParams().get('redirect');
 
 	const [ busy, setBusy ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false);
@@ -47,27 +48,33 @@ export default function Page()
 					data[key] = value as string;
 				}
 
-				const response = await fetch(`/api/auth/login`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				});
+				setBusy(true);
 
-				const json = await response.json() as { code: number, error?: string };
+				try {
+					const response = await fetch(`/api/auth/login`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(data),
+					});
 
-				if (json.code !== 0) {
-					alert(json.error);
-					return;
-				}
+					const json = await response.json() as { code: number, error?: string };
 
-				const redirectUrl = params.get('redirect');
+					if (json.code !== 0) {
+						alert(json.error);
+						return;
+					}
 
-				if (redirectUrl && redirectUrl.startsWith('/')) {
-					router.push(redirectUrl);
-				} else {
-					router.push('/');
+					if (redirectUrl && redirectUrl.startsWith('/')) {
+						router.push(redirectUrl);
+					} else {
+						router.push('/');
+					}
+				} catch (error) {
+					console.error(error);
+				} finally {
+					setBusy(false);
 				}
 			} }
 		>
@@ -114,5 +121,14 @@ export default function Page()
 
 			<button disabled={ busy }>Autenticar</button>
 		</form>
+	);
+}
+
+export default function Page()
+{
+	return (
+		<Suspense>
+			<Form/>
+		</Suspense>
 	);
 }
