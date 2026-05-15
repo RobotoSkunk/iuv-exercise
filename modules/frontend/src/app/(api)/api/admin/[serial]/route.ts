@@ -31,3 +31,19 @@ export async function GET(_: NextRequest, {
 		},
 	});
 }
+
+
+export async function DELETE(_: NextRequest, {
+	params,
+}: {
+	params: Promise<{ serial: string }>;
+})
+{
+	const { serial } = await params;
+
+	await fetch(`http://127.0.0.1:5001/administrator/${serial}`, { method: 'DELETE' });
+
+	return Response.json({
+		code: 0,
+	});
+}

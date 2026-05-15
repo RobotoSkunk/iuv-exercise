@@ -64,6 +64,18 @@ class Administrator extends User
 		}
 	}
 
+	public async delete()
+	{
+		try {
+			await client.connection
+				.deleteFrom('users')
+				.where('id', '=', this._serial)
+				.execute();
+		} catch (error) {
+			throw error;
+		}
+	}
+
 	public static async authenticate(serial: string, password: string)
 	{
 		const userData = await client.connection
@@ -110,6 +122,7 @@ class Administrator extends User
 					lastname_mother: this.lastnameMother,
 					role_id: this.roleId,
 				})
+				.where('id', '=', this._serial)
 				.execute();
 		} catch (error) {
 			throw error;

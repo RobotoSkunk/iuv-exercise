@@ -2,17 +2,25 @@
 'use client';
 
 import {
+	useContext,
 	useEffect,
 	useState,
 } from 'react';
+
+import {
+	NotificationsContext,
+} from '@/contexts/notifications';
 
 import Link from 'next/link';
 import Image from 'next/image';
 
 import eyeIcon from '@/assets/icon/eye.svg';
+import trashIcon from '@/assets/icon/trash.svg';
 
 export default function Page()
 {
+	const notificationsContext = useContext(NotificationsContext);
+
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ teachers, setTeachers ] = useState<TeacherData[]>([]);
 
@@ -30,41 +38,69 @@ export default function Page()
 
 	return (<>
 		<h1 style={{ marginLeft: 52 }}>Docentes</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Cédula</th>
-					<th>Nombre</th>
-					<th>Apellido Paterno</th>
-					<th>Apellido Materno</th>
-					<th>Administrar</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ teachers.map((v, i) => (
-					<tr key={ i }>
-						<td>{ v.serial }</td>
-						<td>{ v.name }</td>
-						<td>{ v.lastname_father }</td>
-						<td>{ v.lastname_mother }</td>
-						<td>
-							<Link
-								href={ `/docente/${v.serial}` }
-							>
-								<Image
-									src={ eyeIcon }
-									alt=''
-									title='Ver información del docente'
-									width={ 26 }
-									height={ 26 }
-								/>
-							</Link>
-						</td>
+		{ teachers.length > 0 &&
+			<table>
+				<thead>
+					<tr>
+						<th>Cédula</th>
+						<th>Nombre</th>
+						<th>Apellido Paterno</th>
+						<th>Apellido Materno</th>
+						<th>Administrar</th>
 					</tr>
-				)) }
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{ teachers.map((v, i) => (
+						<tr key={ i }>
+							<td>{ v.serial }</td>
+							<td>{ v.name }</td>
+							<td>{ v.lastname_father }</td>
+							<td>{ v.lastname_mother }</td>
+							<td className='actions'>
+								<Link
+									href={ `/docente/${v.serial}` }
+								>
+									<Image
+										src={ eyeIcon }
+										alt=''
+										title='Ver información del docente'
+										width={ 26 }
+										height={ 26 }
+									/>
+								</Link>
+								<Link
+									href='#'
+									onClick={ async (ev) =>
+									{
+										ev.preventDefault();
 
+										const answer = confirm(
+											`¿Estás seguro de eliminar este docente del sistema (cédula ${v.serial})? ` +
+											'Esta acción es permanente y no se puede deshacer.'
+										);
+
+										if (answer) {
+											await fetch(`/api/teacher/${v.serial}`, { method: 'DELETE' })
+
+											notificationsContext.push('success', 'Se ha eliminado el docente.');
+											await fetchTeachers();
+										}
+									} }
+								>
+									<Image
+										src={ trashIcon }
+										alt=''
+										title='Eliminar docente'
+										width={ 26 }
+										height={ 26 }
+									/>
+								</Link>
+							</td>
+						</tr>
+					)) }
+				</tbody>
+			</table>
+		}
 		<h2 style={{ marginLeft: 52 }}>Registrar un nuevo docente</h2>
 		<form
 			onSubmit={ async (ev) =>

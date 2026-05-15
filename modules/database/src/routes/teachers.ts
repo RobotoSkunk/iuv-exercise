@@ -88,6 +88,27 @@ teachersRouter.patch('/teacher/:id', async (req, res) =>
 	});
 });
 
+teachersRouter.delete('/teacher/:id', async (req, res) =>
+{
+	const teacherId = req.params.id;
+
+	const teacher = await Teacher.getBySerial(teacherId);
+
+	if (!teacher) {
+		res.status(403).json({
+			code: 1,
+			error: 'not_found',
+		});
+		return;
+	}
+
+	await teacher.delete();
+
+	res.json({
+		code: 0,
+	});
+});
+
 teachersRouter.get('/teachers', async (req, res) =>
 {
 	const teachers = await Teacher.getAll();

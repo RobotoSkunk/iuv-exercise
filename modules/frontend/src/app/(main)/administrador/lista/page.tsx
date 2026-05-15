@@ -2,14 +2,20 @@
 'use client';
 
 import {
+	useContext,
 	useEffect,
 	useState,
 } from 'react';
+
+import {
+	NotificationsContext,
+} from '@/contexts/notifications';
 
 import Link from 'next/link';
 import Image from 'next/image';
 
 import eyeIcon from '@/assets/icon/eye.svg';
+import trashIcon from '@/assets/icon/trash.svg';
 
 type Admin = Omit<AdminData, 'role_id'> & {
 	role: string;
@@ -17,6 +23,8 @@ type Admin = Omit<AdminData, 'role_id'> & {
 
 export default function Page()
 {
+	const notificationsContext = useContext(NotificationsContext);
+
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ admins, setAdmins ] = useState<Admin[]>([]);
 	const [ roles, setRoles ] = useState<RoleData[]>([]);
@@ -44,43 +52,71 @@ export default function Page()
 
 	return (<>
 		<h1 style={{ marginLeft: 52 }}>Administradores</h1>
-		<table>
-			<thead>
-				<tr>
-					<th>Cédula</th>
-					<th>Nombre</th>
-					<th>Apellido Paterno</th>
-					<th>Apellido Materno</th>
-					<th>Rol</th>
-					<th>Administrar</th>
-				</tr>
-			</thead>
-			<tbody>
-				{ admins.map((v, i) => (
-					<tr key={ i }>
-						<td>{ v.serial }</td>
-						<td>{ v.name }</td>
-						<td>{ v.lastname_father }</td>
-						<td>{ v.lastname_mother }</td>
-						<td>{ v.role }</td>
-						<td>
-							<Link
-								href={ `/administrador/${v.serial}` }
-							>
-								<Image
-									src={ eyeIcon }
-									alt=''
-									title='Ver información del administrador'
-									width={ 26 }
-									height={ 26 }
-								/>
-							</Link>
-						</td>
+		{ admins.length > 0 &&
+			<table>
+				<thead>
+					<tr>
+						<th>Cédula</th>
+						<th>Nombre</th>
+						<th>Apellido Paterno</th>
+						<th>Apellido Materno</th>
+						<th>Rol</th>
+						<th>Administrar</th>
 					</tr>
-				)) }
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{ admins.map((v, i) => (
+						<tr key={ i }>
+							<td>{ v.serial }</td>
+							<td>{ v.name }</td>
+							<td>{ v.lastname_father }</td>
+							<td>{ v.lastname_mother }</td>
+							<td>{ v.role }</td>
+							<td className='actions'>
+								<Link
+									href={ `/administrador/${v.serial}` }
+								>
+									<Image
+										src={ eyeIcon }
+										alt=''
+										title='Ver información del administrador'
+										width={ 26 }
+										height={ 26 }
+									/>
+								</Link>
+								<Link
+									href='#'
+									onClick={ async (ev) =>
+									{
+										ev.preventDefault();
 
+										const answer = confirm(
+											`¿Estás seguro de eliminar este administrador (cédula ${v.serial})? ` +
+											'Esta acción es permanente y no se puede deshacer.'
+										);
+
+										if (answer) {
+											await fetch(`/api/admin/${v.serial}`, { method: 'DELETE' })
+
+											notificationsContext.push('success', 'Se ha eliminado el administrador.');
+											await fetchAdmins();
+										}
+									} }
+								>
+									<Image
+										src={ trashIcon }
+										alt=''
+										title='Eliminar docente'
+										width={ 26 }
+										height={ 26 }
+									/>
+								</Link>
+							</td>
+						</tr>
+					)) }
+				</tbody>
+			</table>
+		}
 		<h2 style={{ marginLeft: 52 }}>Registrar un nuevo docente</h2>
 		<form
 			onSubmit={ async (ev) =>

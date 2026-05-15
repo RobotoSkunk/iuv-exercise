@@ -24,6 +24,19 @@ class Teacher extends User
 					lastname_father: this.lastnameFather,
 					lastname_mother: this.lastnameMother,
 				})
+				.where('id', '=', this._serial)
+				.execute();
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	public async delete()
+	{
+		try {
+			await client.connection
+				.deleteFrom('teachers')
+				.where('id', '=', this._serial)
 				.execute();
 		} catch (error) {
 			throw error;

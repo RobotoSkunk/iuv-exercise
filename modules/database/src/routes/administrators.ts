@@ -107,6 +107,27 @@ adminRouter.patch('/administrator/:id', async (req, res) =>
 	});
 });
 
+adminRouter.delete('/administrator/:id', async (req, res) =>
+{
+	const adminId = req.params.id;
+
+	const admin = await Administrator.getBySerial(adminId);
+
+	if (!admin) {
+		res.status(403).json({
+			code: 1,
+			error: 'not_found',
+		});
+		return;
+	}
+
+	await admin.delete();
+
+	res.json({
+		code: 0,
+	});
+});
+
 adminRouter.post('/administrator/authenticate', async (req, res) =>
 {
 	const data: {
