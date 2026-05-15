@@ -31,7 +31,7 @@ async function up(db: Kysely<unknown>): Promise<void>
 		.addColumn('password', 'text', cb => cb.notNull())
 		.addColumn('role_id', 'integer', cb => cb.notNull())
 
-		.addForeignKeyConstraint('fk_users_role_id', [ 'role_id' ], 'roles', [ 'id' ])
+		.addForeignKeyConstraint('fk_users_role_id', [ 'role_id' ], 'roles', [ 'id' ], cb => cb.onDelete('cascade'))
 		.execute();
 
 	await db.schema
@@ -41,7 +41,7 @@ async function up(db: Kysely<unknown>): Promise<void>
 		.addColumn('created_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
 		.addColumn('is_entry', 'boolean', cb => cb.notNull())
 
-		.addForeignKeyConstraint('fk_attendances_teacher_id', [ 'teacher_id' ], 'teachers', [ 'id' ])
+		.addForeignKeyConstraint('fk_attendances_teacher_id', [ 'teacher_id' ], 'teachers', [ 'id' ], cb => cb.onDelete('cascade'))
 		.execute();
 
 	await db.schema
@@ -52,7 +52,7 @@ async function up(db: Kysely<unknown>): Promise<void>
 		.addColumn('created_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
 		.addColumn('expires_at', 'timestamp', cb => cb.notNull().defaultTo(sql`CURRENT_TIMESTAMP`))
 
-		.addForeignKeyConstraint('fk_auth_tokens_user_id', [ 'user_id' ], 'users', [ 'id' ])
+		.addForeignKeyConstraint('fk_auth_tokens_user_id', [ 'user_id' ], 'users', [ 'id' ], cb => cb.onDelete('cascade'))
 		.execute();
 }
 

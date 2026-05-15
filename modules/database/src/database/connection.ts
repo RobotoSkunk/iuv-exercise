@@ -19,6 +19,8 @@ import {
 	ContextMigrationProvider,
 } from './migrations/provider';
 
+import argon2 from 'argon2';
+
 
 import * as migrations from './migrations';
 
@@ -66,12 +68,68 @@ class Database
 	/**
 	 * Test the database connection.
 	 */
-	public async testConnection(): Promise<void>
+	public async prepare(): Promise<void>
 	{
 		try {
-			sql<string>`SELECT NOW()`;
+			const { roles_count } = await this.db
+				.selectFrom('roles')
+				.select(eb => eb.fn.countAll().as('roles_count'))
+				.executeTakeFirstOrThrow();
 
-			console.log('Connected to database.');
+			const { users_count } = await this.db
+				.selectFrom('users')
+				.select(eb => eb.fn.countAll().as('users_count'))
+				.executeTakeFirstOrThrow();
+
+			if (roles_count == 0) {
+				await this.db
+					.insertInto('roles')
+					.values([
+						{
+							id: 1,
+							name: 'Administrador del sistema',
+							permissions: [
+								'admin.create',
+								'admin.edit',
+								'admin.delete',
+								'role.create',
+								'role.edit',
+								'role.delete',
+								'teacher.create',
+								'teacher.edit',
+								'teacher.delete',
+							],
+						},
+						{
+							id: 2,
+							name: 'Empleado',
+							permissions: [
+								'teacher.create',
+								'teacher.edit',
+								'teacher.delete',
+							],
+						},
+					])
+					.execute();
+			}
+
+			if (users_count == 0) {
+				const password = await argon2.hash('1234');
+
+				await this.db
+					.insertInto('users')
+					.values({
+						id: 'ABC123',
+						name: 'José Ignacio',
+						lastname_father: 'Orozco',
+						lastname_mother: 'Álvarez',
+						role_id: 1,
+						password,
+					})
+					.execute();
+			}
+
+			console.log('Database ready.');
 
 		} catch (error) {
 			console.error('An error ocurred while trying to test database connection.');

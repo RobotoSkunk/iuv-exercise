@@ -12,7 +12,7 @@ import databaseClient from './database';
 	// Establish connection with database
 	try {
 		await databaseClient.tryMigrateToLatest();
-		await databaseClient.testConnection();
+		await databaseClient.prepare();
 	} catch (error) {
 		console.error('Fatal error trying to connect to database', error);
 		process.exit(-1);
