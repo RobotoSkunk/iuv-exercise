@@ -31,6 +31,12 @@ compilar TypeScript.
 npm i -g typescript
 ```
 
+También se requiere de PM2 para ejecutar los módulos simultáneamente.
+
+```bash
+npm i -g pm2
+```
+
 ## Preparación
 
 Primero se ejecuta el siguiente comando en el directorio raíz del proyecto
@@ -42,7 +48,7 @@ sh ./prepare.sh
 
 Cada módulo tiene su configuración individual, para configurarlos, se debe
 duplicar el archivo `example.env` que se encuentra en cada uno de los módulos
-del proyecto y renombrarlo a `.env`.
+del proyecto y renombrarlo a `.env` cambiando la configuración de cada uno.
 
 Por ejemplo.
 
@@ -54,62 +60,15 @@ vi .env
 
 ## Ejecución
 
-Debido a que no existe un script que ejecute el proyecto completo de golpe,
-se debe ejecutar cada módulo por separado.
-
-A continuación, se listan los módulos disponibles para su ejecución.
-
-### Ejecución del módulo `database`
-
-Este es el módulo más importante del proyecto, debido a que todas las
-operaciones con la base de datos se realizan aquí. Sin este módulo, el resto de
-módulos no operarán.
+Para iniciar el proyecto, ejecute el script `start.sh` desde el directorio
+raíz del repositorio.
 
 ```bash
-cd module/database
-
-# Compilación
-tsc
-
-# Ejecución
-node
-```
-
-### Ejecución del módulo `checkout`
-
-Asumiendo que se encuentra en el directorio raíz del proyecto, estos son los
-pasos para compilar y ejecutar el módulo.
-
-```bash
-cd module/checkout
-
-# Compilación
-tsc
-
-# Ejecución
-node
-```
-
-Por ahora, el código de `checkout` es demasiado simple, puesto a que es parte de
-la primera iteración del proyecto.
-
-### Ejecución del módulo `frontend`
-
-Asumiendo que se encuentra en el directorio raíz del proyecto, nuevamente, los
-pasos para ejecutar el frontend son los siguientes.
-
-```bash
-cd module/frontend
-
-# Ejecución en modo de desarrollador
-npm run dev
+sh ./start.sh
 ```
 
 Luego de eso, acceda al proyecto por medio de `http://127.0.0.1:3000/` desde
 un navegador.
-
-> **Recordatorio**: el módulo requiere que los otros dos módulos estén en
-ejecución, principalmente el módulo `database`.
 
 ## Diagrama de clases
 
