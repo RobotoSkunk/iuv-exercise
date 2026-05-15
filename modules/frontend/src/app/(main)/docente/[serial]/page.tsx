@@ -3,9 +3,14 @@
 
 import {
 	use,
+	useContext,
 	useEffect,
 	useState,
 } from 'react';
+
+import {
+	NotificationsContext,
+} from '@/contexts/notifications';
 
 import panelStyle from '../../panel.module.css';
 
@@ -16,6 +21,9 @@ export default function Page({
 })
 {
 	const { serial } = use(params);
+	const notificationsContext = useContext(NotificationsContext);
+
+	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ teacherData, setTeacherData ] = useState<TeacherData | null>(null);
 	const [ attendances, setAttendances ] = useState<AttendanceData[]>([]);
 
@@ -41,10 +49,51 @@ export default function Page({
 		<h1 className={ panelStyle.title }>Información del Docente</h1>
 		<form
 			className={ panelStyle.form }
-			onSubmit={ (ev) => {
+			onSubmit={ async (ev) => {
 				ev.preventDefault();
 
-				
+				if (busy) {
+					return;
+				}
+
+				const form = ev.currentTarget;
+
+				if (!form.checkValidity()) {
+					form.reportValidity();
+					return;
+				}
+
+				setBusy(true);
+
+				const formData = new FormData(ev.currentTarget);
+				const data: { [ key: string ]: string } = { };
+
+				for (const [ key, value ] of formData.entries()) {
+					data[key] = value as string;
+				}
+
+				try {
+					const response = await fetch(`/api/teacher/${serial}`, {
+						method: 'PATCH',
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						body: JSON.stringify(data),
+					});
+
+					const json = await response.json() as { code: number, error?: string };
+
+					if (!json.error) {
+						notificationsContext.push('success', 'Datos actualizados exitosamente.');
+					} else {
+						alert(json.error);
+					}
+				} catch (error) {
+					alert('Algo ha salido mal, intenta de nuevo más tarde');
+					console.error(error);
+				} finally {
+					setBusy(false);
+				}
 			} }
 		>
 			<label className={ panelStyle['input-label'] }>
@@ -53,11 +102,11 @@ export default function Page({
 			</label>
 			<label className={ panelStyle['input-label'] }>
 				<span>Apellido Paterno</span>
-				<input type='text' name='lastname-father' defaultValue={ teacherData.lastname_father }/>
+				<input type='text' name='lastname_father' defaultValue={ teacherData.lastname_father }/>
 			</label>
 			<label className={ panelStyle['input-label'] }>
 				<span>Apellido Materno</span>
-				<input type='text' name='lastname-mother' defaultValue={ teacherData.lastname_mother }/>
+				<input type='text' name='lastname_mother' defaultValue={ teacherData.lastname_mother }/>
 			</label>
 			<button>Actualizar datos</button>
 		</form>
