@@ -14,15 +14,6 @@ import {
 
 import panelStyle from '../../panel.module.css';
 
-type Admin = Omit<AdminData, 'role_id'> & {
-	id: number;
-	name: string;
-	role: {
-		id: number;
-		name: 'string';
-	},
-};
-
 export default function Page({
 	params,
 }: {

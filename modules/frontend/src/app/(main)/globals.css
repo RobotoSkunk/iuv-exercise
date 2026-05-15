@@ -134,6 +134,32 @@ button,
 				}
 			}
 		}
+
+		& .user {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			& > span {
+				display: flex;
+				align-items: center;
+				color: var(--background);
+
+				& img {
+					filter: invert(1);
+					margin: 0 8px;
+				}
+			}
+
+			& hr {
+				margin: 0;
+				border: 0;
+
+				margin-top: 6px;
+				border-bottom: 1px solid var(--background);
+				opacity: 0.5;
+			}
+		}
 	}
 
 	& > main {

@@ -2,6 +2,7 @@
 'use client';
 
 import {
+	useEffect,
 	useState,
 } from 'react';
 
@@ -22,6 +23,15 @@ import {
 	Alfa_Slab_One,
 } from 'next/font/google';
 
+import {
+	defaultUserData,
+	LoggedUserContext,
+} from '@/contexts/logged-user';
+
+import {
+	NotificationsContext,
+} from '@/contexts/notifications';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -31,7 +41,8 @@ import bookUserIcon from '@/assets/icon/book-user.svg';
 import doorOpenIcon from '@/assets/icon/door-open.svg';
 import gearIcon from '@/assets/icon/gear.svg';
 import xmarkIcon from '@/assets/icon/xmark.svg';
-import { NotificationsContext } from '@/contexts/notifications';
+import userIcon from '@/assets/icon/user.svg';
+import shieldIcon from '@/assets/icon/shield.svg';
 
 const alfaSlabOneFont = Alfa_Slab_One({ weight: '400' });
 
@@ -77,6 +88,7 @@ export default function Dashboard({
 {
 	const router = useRouter();
 	const [ notifications, setNotifications ] = useImmer<PanelNotification[]>([]);
+	const [ userData, setUserData ] = useState<UserData>(defaultUserData);
 
 	function removeNotification(id: number)
 	{
@@ -87,6 +99,26 @@ export default function Dashboard({
 
 		setNotifications(newNotifications);
 	}
+
+	async function fetchIdentity()
+	{
+		try {
+			const response = await fetch('/api/identity');
+			const json = await response.json() as APIResponse<UserData>;
+
+			if (json.code === 0) {
+				setUserData(json.data);
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	useEffect(() =>
+	{
+		fetchIdentity();
+	}, [ ]);
+
 
 	return (
 		<div
@@ -108,38 +140,61 @@ export default function Dashboard({
 						/>
 						<span>Inicio</span>
 					</Link>
-					<Link href='/administrador/lista'>
-						<div className='background'/>
-						<Image
-							src={ userShieldIcon }
-							alt=''
-							width={ 20 }
-							height={ 20 }
-						/>
-						<span>Administradores</span>
-					</Link>
-					<Link href='/docente/lista'>
-						<div className='background'/>
-						<Image
-							src={ bookUserIcon }
-							alt=''
-							width={ 20 }
-							height={ 20 }
-						/>
-						<span>Docentes</span>
-					</Link>
-					<Link href='/rol'>
-						<div className='background'/>
-						<Image
-							src={ gearIcon }
-							alt=''
-							width={ 20 }
-							height={ 20 }
-						/>
-						<span>Roles</span>
-					</Link>
+					{ userData.role.permissions.filter(r => r.startsWith('admin')).length > 0 &&
+						<Link href='/administrador/lista'>
+							<div className='background'/>
+							<Image
+								src={ userShieldIcon }
+								alt=''
+								width={ 20 }
+								height={ 20 }
+							/>
+							<span>Administradores</span>
+						</Link>
+					}
+					{ userData.role.permissions.filter(r => r.startsWith('teacher')).length > 0 &&
+						<Link href='/docente/lista'>
+							<div className='background'/>
+							<Image
+								src={ bookUserIcon }
+								alt=''
+								width={ 20 }
+								height={ 20 }
+							/>
+							<span>Docentes</span>
+						</Link>
+					}
+					{ userData.role.permissions.filter(r => r.startsWith('role')).length > 0 &&
+						<Link href='/rol'>
+							<div className='background'/>
+							<Image
+								src={ gearIcon }
+								alt=''
+								width={ 20 }
+								height={ 20 }
+							/>
+							<span>Roles</span>
+						</Link>
+					}
 				</div>
-				<div>
+				<div className='user'>
+					<span>
+						<Image
+							src={ userIcon }
+							alt=''
+							width={ 20 }
+						/>
+						<b>{ `${userData.name} ${userData.lastname_father} ${userData.lastname_mother}` }</b>
+					</span>
+					<span>
+						<Image
+							src={ shieldIcon }
+							alt=''
+							width={ 20 }
+						/>
+						{ userData.role.name }
+					</span>
+					<hr/>
 					<Link
 						href='/iniciar-sesion'
 						onClick={ async (ev) => {
@@ -185,7 +240,14 @@ export default function Dashboard({
 						}
 					}}
 				>
-					{ children }
+					<LoggedUserContext
+						value={{
+							data: userData,
+							fetch: fetchIdentity,
+						}}
+					>
+						{ children }
+					</LoggedUserContext>
 				</NotificationsContext>
 			</main>
 

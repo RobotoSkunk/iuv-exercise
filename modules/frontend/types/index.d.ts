@@ -44,6 +44,19 @@ declare global {
 		type: NotificationTypes;
 		content: string;
 	}
+
+	type Admin = Omit<AdminData, 'role_id'> & {
+		role: {
+			id: number;
+			name: string;
+		},
+	};
+
+	type UserData = Admin & {
+		role: {
+			permissions: string[];
+		},
+	};
 }
 
 export { };

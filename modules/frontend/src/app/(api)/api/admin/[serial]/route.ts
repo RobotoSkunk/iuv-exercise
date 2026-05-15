@@ -32,7 +32,6 @@ export async function GET(_: NextRequest, {
 	});
 }
 
-
 export async function DELETE(_: NextRequest, {
 	params,
 }: {
