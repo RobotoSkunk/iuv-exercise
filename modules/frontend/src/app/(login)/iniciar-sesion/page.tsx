@@ -2,13 +2,13 @@
 'use client';
 
 import {
-	Suspense,
+	// Suspense,
 	useState,
 } from 'react';
 
 import {
 	useRouter,
-	useSearchParams,
+	// useSearchParams,
 } from 'next/navigation';
 
 import Image from 'next/image';
@@ -18,10 +18,11 @@ import eyeSlashIcon from '@/assets/icon/eye-slash.svg';
 
 import style from './page.module.css';
 
-function Form()
+export default function Page()
 {
+	
 	const router = useRouter();
-	const redirectUrl = useSearchParams().get('redirect');
+	// const redirectUrl = useSearchParams().get('redirect');
 
 	const [ busy, setBusy ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false);
@@ -66,11 +67,11 @@ function Form()
 						return;
 					}
 
-					if (redirectUrl && redirectUrl.startsWith('/')) {
-						router.push(redirectUrl);
-					} else {
+					// if (redirectUrl && redirectUrl.startsWith('/')) {
+					// 	router.push(redirectUrl);
+					// } else {
 						router.push('/');
-					}
+					// }
 				} catch (error) {
 					console.error(error);
 				} finally {
@@ -121,14 +122,5 @@ function Form()
 
 			<button disabled={ busy }>Autenticar</button>
 		</form>
-	);
-}
-
-export default function Page()
-{
-	return (
-		<Suspense>
-			<Form/>
-		</Suspense>
 	);
 }
