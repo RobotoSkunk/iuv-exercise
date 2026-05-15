@@ -29,6 +29,12 @@ export default function Page()
 	const [ admins, setAdmins ] = useState<Admin[]>([]);
 	const [ roles, setRoles ] = useState<RoleData[]>([]);
 
+	const [ passwords, setPasswords ] = useState<{
+		serial: string;
+		name: string;
+		password: string;
+	}[]>([]);
+
 	async function fetchAdmins()
 	{
 		const result = await fetch('/api/admins');
@@ -156,11 +162,20 @@ export default function Page()
 						body: JSON.stringify(data),
 					});
 
-					const json = await response.json() as { code: number, error?: string };
+					const json = await response.json() as { code: number, error?: string, data: { password: string } };
 
 					if (!json.error) {
 						form.reset();
 						await fetchAdmins();
+
+						setPasswords([
+							...passwords,
+							{
+								serial: formData.get('serial') as string,
+								name: formData.get('name') as string,
+								password: json.data.password,
+							},
+						]);
 					} else {
 						alert(json.error);
 					}
@@ -216,5 +231,40 @@ export default function Page()
 				</tbody>
 			</table>
 		</form>
+
+		{ passwords.length > 0 &&
+			<section>
+				<h2 style={{ marginLeft: 52 }}>Contraseñas generadas</h2>
+				<p style={{ marginLeft: 52 }}>
+					Guarda las contraseñas generadas en un lugar seguro, porque no se podrán volver a ver una vez se
+					cierre la página.
+				</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Cédula</th>
+							<th>Nombre</th>
+							<th>Contraseña</th>
+						</tr>
+					</thead>
+					<tbody>
+						{ passwords.map((v, i) =>
+						(
+							<tr key={ i }>
+								<td>
+									<span>{ v.serial }</span>
+								</td>
+								<td>
+									<span>{ v.name }</span>
+								</td>
+								<td>
+									<input type='text' readOnly value={ v.password }/>
+								</td>
+							</tr>
+						)) }
+					</tbody>
+				</table>
+			</section>
+		}
 	</>);
 }

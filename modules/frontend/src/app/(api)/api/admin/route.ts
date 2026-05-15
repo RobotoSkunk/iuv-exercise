@@ -64,7 +64,7 @@ export async function POST(request: NextRequest)
 			body: JSON.stringify(data),
 		});
 
-		const json = await req.json() as { code: number, error?: string };
+		const json = await req.json() as { code: number, error?: string, data: { password: string } };
 
 		if (json.code !== 0) {
 			return Response.json({
@@ -75,6 +75,9 @@ export async function POST(request: NextRequest)
 
 		return Response.json({
 			code: 0,
+			data: {
+				password: json.data.password,
+			},
 		});
 	} catch (error) {
 		console.error(error);
