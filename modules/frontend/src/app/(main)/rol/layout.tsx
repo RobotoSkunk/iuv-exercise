@@ -3,6 +3,7 @@
 
 import {
 	createContext,
+	useContext,
 	useEffect,
 	useState,
 } from 'react';
@@ -15,6 +16,10 @@ import {
 	AnimatePresence,
 	motion,
 } from 'framer-motion';
+
+import {
+	LoggedUserContext,
+} from '@/contexts/logged-user';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -37,6 +42,8 @@ export default function Page({
 })
 {
 	const pathname = usePathname();
+	const loggedUserContext = useContext(LoggedUserContext);
+
 	const [ roles, setRoles ] = useState<RoleData[]>([]);
 
 	async function fetchRoles()
@@ -55,54 +62,59 @@ export default function Page({
 		<h1 style={{ marginLeft: 52 }}>Roles</h1>
 		<div className={ style.panel }>
 			<div className={ style.list }>
-				{ roles.map((v, i) =>
-				(
+					{ roles.map((v, i) =>
+					(
+						<Link
+							key={ i }
+							href={ `/rol/${v.id}` }
+							className={ 'button ' + style.button }
+						>
+							<span>
+								{ v.name }
+							</span>
+							<AnimatePresence>
+								{ (pathname.split('/').pop() ?? 0) == v.id &&
+									<motion.div
+										className={ style.arrow }
+										style={{
+											y: '-50%',
+										}}
+
+										initial={{ x: -24, opacity: 0 }}
+										animate={{ x: 0, opacity: 1 }}
+										exit={{ x: -12, opacity: 0 }}
+
+										key='arrow'
+									>
+										<Image
+											src={ arrowRightIcon }
+											width={ 26 }
+											height={ 26 }
+											alt=''
+										/>
+									</motion.div>
+								}
+							</AnimatePresence>
+						</Link>
+					)) }
+
+				{ loggedUserContext.data.role.permissions.includes('role.create') &&
 					<Link
-						key={ i }
-						href={ `/rol/${v.id}` }
+						href={ `/rol/nuevo` }
 						className={ 'button ' + style.button }
 					>
+						<Image
+							src={ plusIcon }
+							width={ 26 }
+							height={ 26 }
+							alt=''
+							className={ style.plus }
+						/>
 						<span>
-							{ v.name }
+							Crear nuevo rol
 						</span>
-						{ (pathname.split('/').pop() ?? 0) == v.id &&
-							<motion.div
-								className={ style.arrow }
-								style={{
-									y: '-50%',
-								}}
-
-								initial={{ x: -24, opacity: 0 }}
-								animate={{ x: 0, opacity: 1 }}
-
-								key='arrow'
-							>
-								<Image
-									src={ arrowRightIcon }
-									width={ 26 }
-									height={ 26 }
-									alt=''
-								/>
-							</motion.div>
-						}
 					</Link>
-				)) }
-
-				<Link
-					href={ `/rol/nuevo` }
-					className={ 'button ' + style.button }
-				>
-					<Image
-						src={ plusIcon }
-						width={ 26 }
-						height={ 26 }
-						alt=''
-						className={ style.plus }
-					/>
-					<span>
-						Crear nuevo rol
-					</span>
-				</Link>
+				}
 			</div>
 			<div className={ style.config }>
 				<RolesContext value={{

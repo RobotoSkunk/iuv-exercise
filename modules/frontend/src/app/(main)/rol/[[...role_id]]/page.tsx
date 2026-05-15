@@ -25,11 +25,16 @@ import {
 	NotificationsContext,
 } from '@/contexts/notifications';
 
+import {
+	LoggedUserContext,
+} from '@/contexts/logged-user';
+
 import Image from 'next/image';
 
 import style from './page.module.css';
 
 import loaderIcon from '@/assets/icon/loader.svg';
+
 
 const permissionsData: {
 	intent: string;
@@ -76,10 +81,12 @@ const permissionsData: {
 function Checkbox({
 	name,
 	children,
+	disabled,
 	defaultChecked,
 }: {
 	name: string;
 	children: React.ReactNode;
+	disabled?: boolean;
 	defaultChecked: boolean;
 })
 {
@@ -91,13 +98,14 @@ function Checkbox({
 				type='checkbox'
 				name={ name }
 				defaultChecked={ defaultChecked }
+				disabled={ disabled }
 				onChange={ (ev) => setChecked(ev.currentTarget.checked) }
 			/>
 			<AnimatePresence initial={ false }>
 				<motion.div
 					className={ style.switch }
 					animate={{
-						background: checked ? '#047857' : '#9f1239',
+						background: disabled ? '#4b5563' : (checked ? '#047857' : '#9f1239'),
 					}}
 				>
 					<motion.div
@@ -123,10 +131,26 @@ export default function Page({
 	const router = useRouter();
 	const rolesContext = useContext(RolesContext);
 	const notificationsContext = useContext(NotificationsContext);
+	const loggedUserContext = useContext(LoggedUserContext);
 
 	const [ roleData, setRoleData ] = useState<RoleData | null>(null);
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ loading, setLoading ] = useState<boolean>(true);
+
+	function isSameRole()
+	{
+		return (loggedUserContext.data.role.id + '') == roleId;
+	}
+
+	function canEdit()
+	{
+		return roleId === 'nuevo' || !isSameRole() && loggedUserContext.data.role.permissions.includes('role.edit');
+	}
+
+	function canDelete()
+	{
+		return roleId === 'nuevo' || !isSameRole() && loggedUserContext.data.role.permissions.includes('role.delete');
+	}
 
 	useLayoutEffect(() =>
 	{
@@ -187,7 +211,7 @@ export default function Page({
 		</>);
 	}
 
-	if (!roleData) {
+	if (!roleData || (roleId === 'nuevo' && !loggedUserContext.data.role.permissions.includes('role.create'))) {
 		return (<>
 			<div className={ style.alert }>
 				<h2>Selecciona un rol de la lista.</h2>
@@ -275,6 +299,7 @@ export default function Page({
 					type='text'
 					name='name'
 					defaultValue={ roleData.name }
+					readOnly={ !canEdit() }
 					required
 				/>
 			</section>
@@ -286,57 +311,68 @@ export default function Page({
 					<Checkbox 
 						key={ i }
 						name={ v.intent }
+						disabled={ !canEdit() }
 						defaultChecked={ roleData.permissions.includes(v.intent) }
 					>
 						{ v.name }
 					</Checkbox>
 				)) }
 			</section>
-			<hr className={ style.separator }/>
-			<section>
-			{ roleId === 'nuevo' ?
-				<button disabled={ busy }>Crear</button>
-				:
-				<>
-					<input type='hidden' name='editing' value='1'/>
-					<button
-						style={{ display: 'inline-block' }}
-					>
-						Actualizar
-					</button>
-					<button
-						style={{
-							display: 'inline-block',
-							marginLeft: 12,
-						}}
-						onClick={ async (ev) =>
-						{
-							ev.preventDefault();
+			{ (canEdit() || canDelete()) && <>
+				<hr className={ style.separator }/>
+				<section>
+				{ roleId === 'nuevo' ?
+					<button disabled={ busy }>Crear</button>
+					:
+					<>
+						<input type='hidden' name='editing' value='1'/>
+						{ canEdit() &&
+							<button
+								style={{ display: 'inline-block' }}
+							>
+								Actualizar
+							</button>
+						}
+						{ canDelete() &&
+							<button
+								style={{
+									display: 'inline-block',
+									marginLeft: 12,
+								}}
+								onClick={ async (ev) =>
+								{
+									ev.preventDefault();
 
-							const answer = confirm(
-								'¿Estás seguro de eliminar este rol? Esto eliminará a todos los administradores ' +
-								'adjuntos a este.'
-							);
+									const answer = confirm(
+										'¿Estás seguro de eliminar este rol? Esto eliminará a todos los administradores ' +
+										'adjuntos a este.'
+									);
 
-							if (!answer) {
-								return;
-							}
+									if (!answer) {
+										return;
+									}
 
-							await fetch(`/api/role/${roleId}`, {
-								method: 'DELETE',
-							});
+									await fetch(`/api/role/${roleId}`, {
+										method: 'DELETE',
+									});
 
-							await rolesContext.updateRoles();
+									await rolesContext.updateRoles();
 
-							notificationsContext.push('success', 'Se ha eliminado el rol solicitado.');
-							router.push('/rol');
-						} }
-					>
-						Eliminar
-					</button>
-				</>
-			}
-			</section>
+									notificationsContext.push('success', 'Se ha eliminado el rol solicitado.');
+									router.push('/rol');
+								} }
+							>
+								Eliminar
+							</button>
+						}
+					</>
+				}
+				</section>
+			</> }
+			{ isSameRole() && <>
+				<hr className={ style.separator }/>
+				<p>Por seguridad, no puedes modificar ni eliminar el rol asignado a tu perfil.</p>
+			</> }
 		</form>
 	</>);
 }

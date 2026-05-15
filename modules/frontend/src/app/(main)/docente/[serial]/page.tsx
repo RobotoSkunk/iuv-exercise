@@ -27,17 +27,21 @@ export default function Page({
 	const [ teacherData, setTeacherData ] = useState<TeacherData | null>(null);
 	const [ attendances, setAttendances ] = useState<AttendanceData[]>([]);
 
+	async function fetchAttendances()
+	{
+		const resultAttendances = await fetch(`/api/teacher/${serial}/attendances`);
+		const jsonAttendances = await resultAttendances.json() as APIResponse<AttendanceData[]>;
+
+		setAttendances(jsonAttendances.data);
+	}
+
 	useEffect(() => {
 		(async () => {
 			const result = await fetch(`/api/teacher/${serial}`);
 			const json = await result.json() as APIResponse<TeacherData>;
 
 			setTeacherData(json.data);
-
-			const resultAttendances = await fetch(`/api/teacher/${serial}/attendances`);
-			const jsonAttendances = await resultAttendances.json() as APIResponse<AttendanceData[]>;
-
-			setAttendances(jsonAttendances.data);
+			await fetchAttendances();
 		})();
 	}, [ serial ]);
 
@@ -135,5 +139,24 @@ export default function Page({
 				)) }
 			</tbody>
 		</table>
+
+		<section style={{ textAlign: 'center' }}>
+			<p>Este botón es provisional hasta que los dispositivos de chequeo sean fabricados.</p>
+			<p>
+				<button
+					style={{ display: 'inline-block' }}
+					onClick={ async (ev) =>
+					{
+						await fetch(`/api/teacher/${serial}/check`, {
+							method: 'POST',
+						});
+
+						await fetchAttendances();
+					} }
+				>
+					Simular asistencia
+				</button>
+			</p>
+		</section>
 	</>);
 };

@@ -25,6 +25,10 @@
 	user-select: none;
 	cursor: pointer;
 
+	&:has(input:disabled) {
+		cursor: not-allowed;
+	}
+
 	& input {
 		position: absolute;
 		opacity: 0;

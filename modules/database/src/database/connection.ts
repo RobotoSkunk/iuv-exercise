@@ -86,7 +86,6 @@ class Database
 					.insertInto('roles')
 					.values([
 						{
-							id: 1,
 							name: 'Administrador del sistema',
 							permissions: [
 								'admin.create',
@@ -101,7 +100,6 @@ class Database
 							],
 						},
 						{
-							id: 2,
 							name: 'Empleado',
 							permissions: [
 								'teacher.create',

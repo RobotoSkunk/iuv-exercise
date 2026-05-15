@@ -12,6 +12,10 @@ import {
 	NotificationsContext,
 } from '@/contexts/notifications';
 
+import {
+	LoggedUserContext,
+} from '@/contexts/logged-user';
+
 import panelStyle from '../../panel.module.css';
 
 export default function Page({
@@ -22,6 +26,7 @@ export default function Page({
 {
 	const { serial } = use(params);
 	const notificationsContext = useContext(NotificationsContext);
+	const loggedUserContext = useContext(LoggedUserContext);
 
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ adminData, setAdminData ] = useState<Admin | null>(null);
@@ -93,6 +98,7 @@ export default function Page({
 					const json = await response.json() as { code: number, error?: string };
 
 					if (!json.error) {
+						await loggedUserContext.fetch();
 						notificationsContext.push('success', 'Datos actualizados exitosamente.');
 					} else {
 						alert(json.error);
