@@ -18,9 +18,10 @@ import eyeSlashIcon from '@/assets/icon/eye-slash.svg';
 
 import style from './page.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export default function Page()
 {
-	
 	const router = useRouter();
 	// const redirectUrl = useSearchParams().get('redirect');
 

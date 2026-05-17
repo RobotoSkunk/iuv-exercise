@@ -55,11 +55,11 @@ export default async function proxy(request: NextRequest)
 	}
 
 
-	const nonce = Buffer.from(crypto.getRandomValues(new Uint32Array(32))).toString('base64url');
-	const allowInsecure = process.env.NODE_ENV !== 'production';
+	const isDev = process.env.NODE_ENV !== 'production';
 
 	const csp = [
-		`default-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${ allowInsecure ? "'unsafe-eval'" : '' };`,
+		`default-src 'self';`,
+		`script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''};`,
 		`style-src 'self' 'unsafe-inline';`,
 		`img-src 'self' blob: data:;`,
 		`font-src 'self';`,
@@ -67,12 +67,11 @@ export default async function proxy(request: NextRequest)
 		`base-uri 'self';`,
 		`form-action 'self';`,
 		`frame-ancestors 'none';`,
-		`connect-src 'self';`,
-		allowInsecure ? '' : 'upgrade-insecure-requests;',
+		`upgrade-insecure-requests;`,
 	];
 
 	const requestHeaders = new Headers(request.headers);
-	requestHeaders.set('X-Nonce', nonce);
+	requestHeaders.set('Content-Security-Policy',   csp.join(' '));
 
 	if (userId) {
 		requestHeaders.set('X-UserId', userId);
