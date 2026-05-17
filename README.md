@@ -25,16 +25,11 @@ La estructura actual del proyecto es la siguiente.
 - PostgreSQL >= 18
 
 Además del software listado previamente, se debe instalar un paquete global para
-compilar TypeScript.
+compilar TypeScript. También se requiere de PM2 para ejecutar los módulos
+simultáneamente.
 
 ```bash
-npm i -g typescript
-```
-
-También se requiere de PM2 para ejecutar los módulos simultáneamente.
-
-```bash
-npm i -g pm2
+npm i -g typescript pm2
 ```
 
 ## Preparación
@@ -60,11 +55,12 @@ vi .env
 
 ## Ejecución
 
-Para iniciar el proyecto, ejecute el script `start.sh` desde el directorio
-raíz del repositorio.
+Primero se deben compilar todos los módulos usando el script `build.sh` y
+después se inicia el proyecto con `pm2`.
 
 ```bash
-sh ./start.sh
+sh ./build.sh
+pm2 start
 ```
 
 Luego de eso, acceda al proyecto por medio de `http://127.0.0.1:3000/` desde
