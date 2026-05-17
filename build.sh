@@ -16,6 +16,4 @@ echo "Compilando módulo del cliente..."
 cd ../frontend
 npm run build
 
-echo "Iniciando..."
 cd ../..
-pm2 start
