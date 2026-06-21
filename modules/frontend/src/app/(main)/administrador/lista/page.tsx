@@ -11,6 +11,10 @@ import {
 	NotificationsContext,
 } from '@/contexts/notifications';
 
+import {
+	LoggedUserContext,
+} from '@/contexts/logged-user';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -24,6 +28,7 @@ type Admin = Omit<AdminData, 'role_id'> & {
 export default function Page()
 {
 	const notificationsContext = useContext(NotificationsContext);
+	const loggedUserContext = useContext(LoggedUserContext);
 
 	const [ busy, setBusy ] = useState<boolean>(false);
 	const [ admins, setAdmins ] = useState<Admin[]>([]);
@@ -90,33 +95,35 @@ export default function Page()
 										height={ 26 }
 									/>
 								</Link>
-								<Link
-									href='#'
-									onClick={ async (ev) =>
-									{
-										ev.preventDefault();
+								{ v.serial != loggedUserContext.data.serial &&
+									<Link
+										href='#'
+										onClick={ async (ev) =>
+										{
+											ev.preventDefault();
 
-										const answer = confirm(
-											`¿Estás seguro de eliminar este administrador (cédula ${v.serial})? ` +
-											'Esta acción es permanente y no se puede deshacer.'
-										);
+											const answer = confirm(
+												`¿Estás seguro de eliminar este administrador (cédula ${v.serial})? ` +
+												'Esta acción es permanente y no se puede deshacer.'
+											);
 
-										if (answer) {
-											await fetch(`/api/admin/${v.serial}`, { method: 'DELETE' })
+											if (answer) {
+												await fetch(`/api/admin/${v.serial}`, { method: 'DELETE' });
 
-											notificationsContext.push('success', 'Se ha eliminado el administrador.');
-											await fetchAdmins();
-										}
-									} }
-								>
-									<Image
-										src={ trashIcon }
-										alt=''
-										title='Eliminar docente'
-										width={ 26 }
-										height={ 26 }
-									/>
-								</Link>
+												notificationsContext.push('success', 'Se ha eliminado el administrador.');
+												await fetchAdmins();
+											}
+										} }
+									>
+										<Image
+											src={ trashIcon }
+											alt=''
+											title='Eliminar docente'
+											width={ 26 }
+											height={ 26 }
+										/>
+									</Link>
+								}
 							</td>
 						</tr>
 					)) }

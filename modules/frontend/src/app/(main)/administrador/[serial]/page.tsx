@@ -124,19 +124,25 @@ export default function Page({
 				<input type='text' name='lastname-mother' defaultValue={ adminData.lastname_mother }/>
 			</label>
 
-			<select name='role_id' defaultValue={ adminData.role.id }>
-				{ roles.map((v, i) => (
-					<option
-						key={ i }
-						value={ v.id }
-					>
-						{ v.name }
-					</option>
-				)) }
-			</select>
+			{ loggedUserContext.data.serial != adminData.serial &&
+				<select name='role_id' defaultValue={ adminData.role.id }>
+					{ roles.map((v, i) => (
+						<option
+							key={ i }
+							value={ v.id }
+						>
+							{ v.name }
+						</option>
+					)) }
+				</select>
+			}
 
 			<button>Actualizar datos</button>
 		</form>
+
+		{ loggedUserContext.data.serial == adminData.serial &&
+			<p style={{ textAlign: 'center' }}>Por seguridad, no puedes cambiar el rol asignado a tu perfil.</p>
+		}
 		<section style={{ textAlign: 'center' }}>
 			<h2>Registro de auditoría</h2>
 			<p>Próximamente, parte del tercer sprint.</p>
