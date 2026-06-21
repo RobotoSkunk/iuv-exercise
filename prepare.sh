@@ -2,8 +2,7 @@
 
 CURRENT_DIRECTORY="$(pwd)";
 
-function install_dependencies
-{
+install_dependencies() {
 	cd "$CURRENT_DIRECTORY/modules/$1";
 	npm i;
 };
