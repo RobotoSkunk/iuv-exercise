@@ -3,9 +3,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 
 	margin: 32px auto;
 	gap: 12px;
+	row-gap: 32px;
 }
 
 .title {
@@ -21,3 +23,5 @@
 		top: -24px;
 	}
 }
+
+

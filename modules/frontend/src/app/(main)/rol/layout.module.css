@@ -67,3 +67,21 @@
 	flex-grow: 1;
 	height: calc(100% - 24px);
 }
+
+@media screen and (max-width: 850px) {
+	.panel {
+		flex-direction: column;
+		height: fit-content;
+		margin-bottom: 24px;
+		width: calc(100% - 24px);
+	}
+
+	.list {
+		width: 100%;
+		border: 0;
+	}
+
+	.config {
+		width: calc(100% - 24px);
+	}
+}

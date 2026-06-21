@@ -70,6 +70,8 @@ button,
 
 		background: var(--background-secondary);
 		width: 280px;
+		min-width: 280px;
+		z-index: 1000;
 
 		& .links {
 			display: flex;
@@ -203,6 +205,15 @@ table {
 	}
 }
 
+.table-container {
+	display: block;
+	overflow-x: auto;
+	height: fit-content;
+
+	padding: 0 12px;
+	width: calc(100% - 24px);
+}
+
 .notifications-container {
 	position: fixed;
 	right: 0;
@@ -255,6 +266,57 @@ table {
 
 		&.success {
 			background: #166534;
+		}
+	}
+}
+
+.nav-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 48px;
+	height: 48px;
+
+	position: fixed;
+	left: 8px;
+	top: 8px;
+	z-index: 1001;
+
+	border: 1px solid var(--background);
+	background: var(--background-secondary);
+	box-shadow: 0px 0px 8px #00000050;
+
+	& img {
+		filter: invert(1);
+		transition: filter 0.2s;
+	}
+
+	&:hover,
+	&:focus-visible {
+		background: var(--background-secondary-active);
+
+		& img {
+			filter: invert(0);
+		}
+	}
+}
+
+@media screen and (max-width: 1000px) {
+	.dashboard > main {
+		padding-top: 38px;
+	}
+
+	.dashboard > nav {
+		position: fixed;
+		height: 100vh;
+
+		box-shadow: 0px 0px 12px #000000a0;
+
+		& .title {
+			width: 100%;
+			text-align: left;
+			margin-left: 18px;
 		}
 	}
 }
