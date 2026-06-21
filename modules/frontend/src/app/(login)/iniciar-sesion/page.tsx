@@ -105,6 +105,7 @@ export default function Page()
 				/>
 				<span>Contraseña</span>
 				<button
+					type='button'
 					className='raw'
 					onClick={ (ev) => {
 						ev.preventDefault();
@@ -121,7 +122,7 @@ export default function Page()
 				</button>
 			</label>
 
-			<button disabled={ busy }>Autenticar</button>
+			<button type='submit' disabled={ busy }>Autenticar</button>
 		</form>
 	);
 }
