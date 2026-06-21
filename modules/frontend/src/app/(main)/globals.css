@@ -34,7 +34,6 @@ select {
 	border: 1px solid var(--border-color);
 	border-radius: 8px;
 
-	outline: none;
 	font: inherit;
 	font-size: inherit;
 	text-decoration: none;

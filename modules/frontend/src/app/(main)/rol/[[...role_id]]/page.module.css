@@ -29,6 +29,10 @@
 		cursor: not-allowed;
 	}
 
+	&:focus-within {
+		outline: 2px solid var(--border-color);
+	}
+
 	& input {
 		position: absolute;
 		opacity: 0;
