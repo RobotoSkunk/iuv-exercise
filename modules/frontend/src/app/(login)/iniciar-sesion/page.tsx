@@ -2,6 +2,7 @@
 'use client';
 
 import {
+	useEffect,
 	// Suspense,
 	useState,
 } from 'react';
@@ -15,6 +16,8 @@ import Image from 'next/image';
 
 import eyeIcon from '@/assets/icon/eye.svg';
 import eyeSlashIcon from '@/assets/icon/eye-slash.svg';
+import shieldImg from '@/assets/img/shield.svg';
+import lionImg from '@/assets/img/lion.svg';
 
 import style from './page.module.css';
 
@@ -27,8 +30,40 @@ export default function Page()
 
 	const [ busy, setBusy ] = useState(false);
 	const [ showPassword, setShowPassword ] = useState(false);
+	const [ width, setWidth ] = useState(1000);
 
-	return (
+	useEffect(() =>
+	{
+		const onResize = () => setWidth(window.innerWidth);
+		window.addEventListener('resize', onResize);
+
+		onResize();
+
+		return () =>
+		{
+			window.removeEventListener('resize', onResize);
+		};
+	}, [ ]);
+
+	return (<>
+		{ width > 600 && <>
+			<Image
+				src={ lionImg }
+				alt=''
+				className={ 'lion' }
+				unoptimized
+				draggable={ false }
+			/>
+			<Image
+				src={ shieldImg }
+				alt=''
+				className={ 'shield' }
+				height={ 220 }
+				unoptimized
+				draggable={ false }
+			/>
+		</>}
+
 		<form
 			action='POST'
 			className={ style.form }
@@ -123,6 +158,17 @@ export default function Page()
 			</label>
 
 			<button type='submit' disabled={ busy }>Autenticar</button>
+
+			{ width <= 600 &&
+				<Image
+					src={ shieldImg }
+					alt=''
+					className={ 'shield' }
+					height={ 220 }
+					unoptimized
+					draggable={ false }
+				/>
+			}
 		</form>
-	);
+	</>);
 }
