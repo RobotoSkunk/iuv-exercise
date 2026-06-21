@@ -30,7 +30,6 @@ body {
 
 button {
 	cursor: pointer;
-	outline: none;
 }
 
 input,
@@ -39,7 +38,6 @@ button:not(.raw) {
 	padding: 10px 14px;
 
 	width: calc(100% - 28px);
-	outline: none;
 
 	font: inherit;
 	background: white;
