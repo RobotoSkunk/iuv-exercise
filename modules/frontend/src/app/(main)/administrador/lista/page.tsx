@@ -202,30 +202,50 @@ export default function Page()
 				<table>
 					<thead>
 						<tr>
-							<th>Cédula</th>
-							<th>Nombre</th>
-							<th>Apellido Paterno</th>
-							<th>Apellido Materno</th>
-							<th>Rol</th>
+							<th>
+								<label htmlFor='serial'>
+									Cédula
+								</label>
+							</th>
+							<th>
+								<label htmlFor='name'>
+									Nombre
+								</label>
+							</th>
+							<th>
+								<label htmlFor='lastname_father'>
+									Apellido Paterno
+								</label>
+							</th>
+							<th>
+								<label htmlFor='lastname_mother'>
+									Apellido Materno
+								</label>
+							</th>
+							<th>
+								<label htmlFor='role_id'>
+									Rol
+								</label>
+							</th>
 							<th></th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>
-								<input type='text' name='serial' aria-label='Cédula' required/>
+								<input type='text' id='serial' name='serial' aria-label='Cédula' required/>
 							</td>
 							<td>
-								<input type='text' name='name' aria-label='Nombre' required/>
+								<input type='text' id='name' name='name' aria-label='Nombre' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_father' aria-label='Apellido Paterno' required/>
+								<input type='text' id='lastname_father' name='lastname_father' aria-label='Apellido Paterno' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_mother' aria-label='Apellido Materno' required/>
+								<input type='text' id='lastname_mother' name='lastname_mother' aria-label='Apellido Materno' required/>
 							</td>
 							<td>
-								<select name='role_id' aria-label='Rol'>
+								<select id='role_id' name='role_id' aria-label='Rol'>
 									{ roles.map((v, i) => (
 										<option
 											key={ i }
