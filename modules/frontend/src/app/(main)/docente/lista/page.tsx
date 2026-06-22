@@ -60,6 +60,7 @@ export default function Page()
 								<td className='actions'>
 									<Link
 										href={ `/docente/${v.serial}` }
+										aria-label={ `Ver información del docente ${ v.lastname_father } ${ v.name }` }
 									>
 										<Image
 											src={ eyeIcon }
@@ -71,6 +72,7 @@ export default function Page()
 									</Link>
 									<Link
 										href='#'
+										aria-label={ `Eliminar al docente ${ v.lastname_father } ${ v.name } del sistema.` }
 										onClick={ async (ev) =>
 										{
 											ev.preventDefault();
@@ -168,16 +170,16 @@ export default function Page()
 					<tbody>
 						<tr>
 							<td>
-								<input type='text' name='serial' required/>
+								<input type='text' name='serial' aria-label='Cédula' required/>
 							</td>
 							<td>
-								<input type='text' name='name' required/>
+								<input type='text' name='name' aria-label='Nombre' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_father' required/>
+								<input type='text' name='lastname_father' aria-label='Apellido Paterno' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_mother' required/>
+								<input type='text' name='lastname_mother' aria-label='Apellido Materno' required/>
 							</td>
 							<td>
 								<button>Registrar</button>

@@ -202,7 +202,7 @@ export default function Page({
 				>
 					<Image
 						src={ loaderIcon }
-						alt=''
+						alt='Cargando'
 						width={ 100 }
 						unoptimized
 					/>

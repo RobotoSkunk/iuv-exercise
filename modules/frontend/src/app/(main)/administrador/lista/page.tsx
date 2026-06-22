@@ -87,6 +87,7 @@ export default function Page()
 								<td className='actions'>
 									<Link
 										href={ `/administrador/${v.serial}` }
+										aria-label={ `Ver información del administrador ${ v.lastname_father } ${ v.name }` }
 									>
 										<Image
 											src={ eyeIcon }
@@ -99,6 +100,7 @@ export default function Page()
 									{ v.serial != loggedUserContext.data.serial &&
 										<Link
 											href='#'
+											aria-label={ `Eliminar al administrador ${ v.lastname_father } ${ v.name } del sistema.` }
 											onClick={ async (ev) =>
 											{
 												ev.preventDefault();
@@ -119,7 +121,7 @@ export default function Page()
 											<Image
 												src={ trashIcon }
 												alt=''
-												title='Eliminar docente'
+												title='Eliminar administrador'
 												width={ 26 }
 												height={ 26 }
 											/>
@@ -132,7 +134,7 @@ export default function Page()
 				</table>
 			</div>
 		}
-		<h2 style={{ marginLeft: 52 }}>Registrar un nuevo docente</h2>
+		<h2 style={{ marginLeft: 52 }}>Registrar un nuevo administrador</h2>
 		<div className='table-container'>
 			<form
 				onSubmit={ async (ev) =>
@@ -211,19 +213,19 @@ export default function Page()
 					<tbody>
 						<tr>
 							<td>
-								<input type='text' name='serial' required/>
+								<input type='text' name='serial' aria-label='Cédula' required/>
 							</td>
 							<td>
-								<input type='text' name='name' required/>
+								<input type='text' name='name' aria-label='Nombre' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_father' required/>
+								<input type='text' name='lastname_father' aria-label='Apellido Paterno' required/>
 							</td>
 							<td>
-								<input type='text' name='lastname_mother' required/>
+								<input type='text' name='lastname_mother' aria-label='Apellido Materno' required/>
 							</td>
 							<td>
-								<select name='role_id'>
+								<select name='role_id' aria-label='Rol'>
 									{ roles.map((v, i) => (
 										<option
 											key={ i }

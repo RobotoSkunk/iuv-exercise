@@ -125,16 +125,19 @@ export default function Page({
 			</label>
 
 			{ loggedUserContext.data.serial != adminData.serial &&
-				<select name='role_id' defaultValue={ adminData.role.id }>
-					{ roles.map((v, i) => (
-						<option
-							key={ i }
-							value={ v.id }
-						>
-							{ v.name }
-						</option>
-					)) }
-				</select>
+				<label className={ panelStyle['input-label'] }>
+					<span>Rol</span>
+					<select name='role_id' defaultValue={ adminData.role.id }>
+						{ roles.map((v, i) => (
+							<option
+								key={ i }
+								value={ v.id }
+							>
+								{ v.name }
+							</option>
+						)) }
+					</select>
+				</label>
 			}
 
 			<button>Actualizar datos</button>
