@@ -294,9 +294,14 @@ export default function Page({
 			} }
 		>
 			<section className={ style.info }>
-				<span className={ style['section-title'] }>Nombre del rol</span>
+				<span className={ style['section-title'] }>
+					<label htmlFor='name'>
+						Nombre del rol
+					</label>
+				</span>
 				<input
 					type='text'
+					id='name'
 					name='name'
 					defaultValue={ roleData.name }
 					readOnly={ !canEdit() }
